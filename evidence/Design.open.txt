@@ -1,0 +1,17 @@
+// net/friendswithmoney/fwm/ui/Design vClassVersion(major=69, minor=0)
+field NUMBER I
+
+=== open(Lnet/minecraft/client/gui/screens/Screen;Ljava/lang/String;I)Lnet/minecraft/client/gui/screens/Screen;
+      0 invokestatic     net.ModBan.locked()Z
+      3 ifeq             14
+      6 new              net/friendswithmoney/fwm/ui/BannedScreen
+      9 dup              
+     10 invokespecial    ui.BannedScreen.<init>()V
+     13 areturn          
+     14 new              net/friendswithmoney/fwm/ui/LauncherScreen
+     17 dup              
+     18 aload_0          
+     19 aload_1          
+     20 iload_2          
+     21 invokespecial    ui.LauncherScreen.<init>(Lnet/minecraft/client/gui/screens/Screen;Ljava/lang/String;I)V
+     24 areturn          

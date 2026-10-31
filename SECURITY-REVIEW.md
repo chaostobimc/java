@@ -4,7 +4,7 @@
 **Autor/Marke:** „Friends With Money“ / HUGOSMP ([friendswithmoney.net](https://friendswithmoney.net))
 **Datum:** 2026-10-31
 **Art der Prüfung:** Statische Analyse des dekompilierten Client-Codes (Whitebox), keine Laufzeit-/Penetrationstests gegen Backend oder Spielserver.
-**Ergebnis in einem Satz:** Keine Hintertür, kein Remote-Code-Execution, kein Diebstahl von Minecraft-/Launcher-Sessions, **keine Rechte-Eskalation durch Mitspieler** – aber mehrere Datenschutz-, Härtungs- und Verfügbarkeitsprobleme, darunter eine **stille UUID-/Nutzernamen-Übermittlung an den Hersteller**, ein **servergesteuerter Kill-Switch**, eine umgehbare Chat-Heuristik (F-14, Abschnitt 6) und ein namensbasiertes Badge-Spoofing (F-13).
+**Ergebnis in einem Satz:** Keine Hintertür, kein Remote-Code-Execution, kein Diebstahl von Minecraft-/Launcher-Sessions, **keine Rechte-Eskalation durch Mitspieler** – aber mehrere Datenschutz-, Härtungs- und Verfügbarkeitsprobleme, darunter eine **stille UUID-/Nutzernamen-Übermittlung an den Hersteller**, ein **servergesteuerter Kill-Switch**, eine umgehbare Chat-Heuristik (F-14, Abschnitt 6) und ein namensbasiertes Badge-Spoofing (F-13). Die Sperrmechanik (Abschnitt 7) ist rein clientseitig und lässt sich lokal aushebeln.
 
 ---
 
@@ -250,6 +250,18 @@ if (u2 != null && FWM.contains(u2)) return name.copy().append(rowLogo());   // �
 
 **Gegenmaßnahmen:** Badge ausschließlich bei UUID-Match (oder wenn der Server ein signiertes/rollenbewertes Attribut liefert); Namens-Fallback entfernen; auf dem Server Nicknames sperren, die Mitgliedsnamen entsprechen; ggf. Badge im UI als „vom Client erkannt“ kennzeichnen.
 
+### F-15 – Sperr-System: fail-closed bei defekter Datei, unsignierte Sperr-Entscheidung, installationweite Sperre
+**Schwere: Mittel** · *CWE-754 / CWE-345* · `net/ModBan.java:34–48, 63–90, 76–149`, `ui/Design.java:8–14` · Details: Abschnitt 7
+
+- **Fail-closed:** `load()` fängt jede Exception (auch `JsonSyntaxException`) und erzeugt `new Note()` mit `name="?"` → `locked()` ist `true` → Bannscreen („Du wurdest gesperrt“), obwohl keine Sperre vorliegt. Ein abgebrochenes Schreiben der Datei (Crash, volle Platte) reicht.
+- **Unsignierte Entscheidung:** `/api/mod/ban/check` antwortet mit `{"banned":…}`; der Client prüft weder Signatur noch Host-Pinning noch Nonce. Wer die TLS-Strecke kontrolliert, kann jede Installation sperren.
+- **Installationweit statt kontobezogen:** `locked()` prüft nur `note != null`, nicht `note.uuid == selfUuid()` → jeder andere Spieler am selben PC wird mitgesperrt; gleichzeitig löscht dessen `banned=false`-Antwort die Sperre des eigentlich gesperrten Accounts.
+- **Alt-Reporting:** jeder weitere Account auf der Installation wird mit `{"uuid","name","of","ofUuid"}` an `/api/mod/ban/alt` gemeldet (`reported`-Liste als Dedupe, unbegrenzt wachsend).
+- **Kein Durchsetzungswert:** Datei löschen + Host blocken oder `apiBaseUrl` auf einen eigenen `{"banned":false}`-Host zeigen entsperrt (Abschnitt 7.4).
+- **Nicht betroffen:** Server-/Minecraft-Bans, Ticket-API, Mod-Key – die Sperre deaktiviert ausschließlich Mod-Funktionen.
+
+**Gegenmaßnahmen:** Signaturprüfung, fail-open bei Lesefehlern, Bindung an die eigene UUID, `lockedBy`/Host fest verdrahten, Alt-Report opt-in.
+
 ---
 
 ## 4. Was geprüft und **nicht** gefunden wurde (Negativbefunde)
@@ -287,6 +299,7 @@ Positiv hervorzuheben: Der Umgang mit dem API-Key (nur an fixe Bot-API, Regex-Va
 | 6 | **F-09/F-10/F-11/F-12** Datenverlust, Auto-Aktionen, Badge-Signaturen, Config-Validierung | mittel |
 | 7 | **F-13** Badge nur per UUID vergeben (Namens-Fallback entfernen), Nicknames reservieren | klein |
 | 8 | **F-14** Serverzeilen-Heuristik härten (Default deny, Templates, `/nick`-Bypass) | klein |
+| 9 | **F-15** Sperr-System: Signatur, fail-open, Bindung an eigene UUID, feste Ban-URL | klein–mittel |
 
 **Gesamturteil:** Der Mod ist **kein Malware-Fall**: kein Code-Nachladen, keine Prozessausführung, kein Konto-/Session-Diebstahl, keine Klartext-Verbindungen. Die relevanten Probleme sind (a) **Datenschutz** (stille UUID-/Nutzernamen-Übermittlung, Alt-Meldungen, fremde UUIDs), (b) **Verfügbarkeit** (DoS über Bilder/Antwortgrößen) und (c) **Härtung/Transparenz** (Klartext-Key, Redirects, Kill-Switch, Trust-Anzeigen). Für Server-Admins gilt: Der Mod ist clientseitig, erzeugt aber Makro-/Automatisierungsverhalten (Sell-Makro, Spawner-Makro, Auto-TPA, Auto-Klicks) – das ist ein Regel-/Fairness-Thema, kein Server-Sicherheitsrisiko.
 
@@ -364,19 +377,113 @@ fromServer(msg) = startsColoured(msg, cfg.serverPrefix /*Default "[HugoSMP]"*/)
 
 ---
 
-## 7. Anhang
+## 7. Sperren (Bans): wie der Mod Spieler aussperrt
 
-### 7.1 Dateien in diesem Repo
+Es gibt genau **einen** Ban-Mechanismus: eine **clientseitige Feature-Sperre**, über deren Aktivierung allein das Backend entscheidet. Es gibt **keine** Funktion, mit der Spieler einander sperren, melden oder blockieren können (der einzige spielernahe Filter ist eine lokale Ignorier-Liste, die `/ignore <name>` an den Server schickt – `chat/Messages.java:206–233`).
+
+### 7.1 Ablauf und Protokoll
+
+| Schritt | Code | Verhalten |
+|---|---|---|
+| Registrierung | `FwmClient.java:27` | `ModBan.register()` hängt sich an `END_CLIENT_TICK` |
+| Erster Lauf | `ModBan.load()` (`:34–48`) | liest `config/fwm-sperre.json`; fehlt sie, ist nichts gesperrt |
+| Tick | `ModBan.tick` (`:76–116`) | bricht ab, wenn UUID oder Spielername leer sind (Menü/Login); sonst `nextCheck = now + 300 000` **vor** dem Request |
+| Antwort | `lambda$tick$3` (`:122–149`) | Erfolg: `nextCheck = now + 1 800 000` (30 min). `banned=true` ⇒ Sperrdatei schreiben; `banned=false` ⇒ Datei löschen |
+| Sperrprüfung | `locked()` (`:23–31`) | `return note != null` – **keine** Prüfung, *welcher* Account gesperrt ist |
+
+```http
+POST https://269153435.de/api/mod/ban/check        # Token: null (kein Key), keine Signatur
+{"uuid":"<32 hex, ohne Bindestriche>","name":"<Spielername>","lockedBy":"<uuid>"|null}
+
+200 OK
+{"banned":true,"name":"<Spielername>"}
+```
+
+Die Sperrdatei im Klartext:
+
+```json
+{"name":"Spieler","uuid":"<32 hex>","at":1730000000000,"reported":["<alt-uuid>", "…"]}
+```
+
+### 7.2 Was eine Sperre bewirkt
+
+- `locked()` ⇒ `true`, sobald die Datei existiert – der Bytecode (`evidence/ModBan.locked.txt`) zeigt nur `getstatic note; ifnull`.
+- `Features.isOn(key)` gibt dann für **jeden** Key `false` zurück (`config/Features.java:40`) – das trifft alle 66 Aufrufstellen (Sell-Makro, Spawner-Makro, Auto-TPA, Waypoints, Emotes, Anti-Leak, HUD-Panels …).
+- `Design.open(...)` liefert statt `LauncherScreen` einen `BannedScreen` (`ui/Design.java:8–14`, Beleg `evidence/Design.open.txt`): „**Du wurdest gesperrt** / You have been banned – und wirst die FWM Mod nicht mehr nutzen können.“
+- Aufhebung nur durch eine spätere Antwort mit `banned=false` (dann `note=null`, Datei wird gelöscht) – oder lokal.
+
+### 7.3 Was eine Sperre **nicht** stoppt
+
+Die Tick-Handler in `FwmClient.lambda$onInitializeClient$1` laufen unabhängig weiter; nur die wenigsten prüfen `Features.isOn`. Ohne Gate bleiben aktiv:
+
+| Komponente | Wirkung trotz Sperre | Takt |
+|---|---|---|
+| `ModBan.tick` | `/api/mod/ban/check` (UUID + Name + `lockedBy`) | 30 min |
+| `Presence.tick` | `/api/mod/presence` bzw. `/presence/lookup` (nur wenn Server-IP `hugosmp` enthält) | 5 min |
+| `TrustedClans.tick` | `/api/mod/clans` | 10 min |
+| `Members.tick` | `membersApiUrl` (Spieler-/Clan-Liste) | `memberRefreshMinutes` |
+| `Tickets.tick`, `Giveaways.tick`, `Market.*`, `ModId.tick` | API-Polling | diverse |
+| `chat/ChatRouter` | Parsen aller unsignierten Serverzeilen | laufend |
+
+Ein gesperrter Spieler ist also **weiterhin Telemetrie- und Präsenzquelle**; die Sperre deaktiviert nur die sichtbaren Funktionen. (Das ist konsistent mit F-01 – ein Opt-out existiert für beides nicht.)
+
+### 7.4 Warum die Sperre keine Durchsetzung ist
+
+1. **Datei löschen** (vor dem Start) ⇒ `note == null` ⇒ entsperrt. Der nächste Check kommt allerdings sofort (Intervall 0 beim Start), die Sperre ist also nach Sekunden wieder da – es sei denn, man kombiniert sie mit 2.
+2. **Netz blocken** (Host `269153435.de` in Firewall/Hosts): `error != null` ⇒ der Fehlerpfad setzt **keine** Sperre (fail-open, `lambda$tick$3`). Ohne Datei bleibt man dauerhaft frei.
+3. **`apiBaseUrl` umbiegen** (`FwmConfig.java:344`, F-12): ein eigener Host, der `{"banned":false}` antwortet, löscht die Sperrdatei beim nächsten Check.
+4. **Jar patchen / anderen Build nutzen** – die Prüfung ist reiner Client-Code ohne Attestierung.
+
+⇒ Die Sperre ist eine **Selbstverpflichtung des Clients**, keine technische Durchsetzung. Wer Datei, Host oder Build kontrolliert, kontrolliert die Sperre.
+
+### 7.5 Wie man in eine Sperre gerät (Angriffsflächen)
+
+| Weg | Bewertung |
+|---|---|
+| Betreiber-Entscheidung im Backend | der einzige legitime Weg |
+| **TLS-Strecke kontrollieren** (Proxy mit eigener CA, kompromittiertes Backend, DNS + gültiges Zertifikat) | `{"banned":true}` genügt → Installation dauerhaft gesperrt. **Keine Signatur, kein Pinning, kein Nonce** ⇒ Antwort ist reines Vertrauen in die Transportverschlüsselung |
+| **Defekte Sperrdatei** | `load()` fängt *jede* Exception und legt `new Note(); note.name="?"` an (`:70–88`) ⇒ `locked()==true` ⇒ Bannscreen, obwohl niemand gesperrt wurde (**fail-closed**). Ursachen: abgebrochenes Schreiben (Crash/volle Platte), manuelles Editieren, Synchronisationskonflikte |
+| **Zweitaccount auf derselben Installation** | `tick` meldet ihn automatisch an `/api/mod/ban/alt`: `{"uuid","name","of","ofUuid"}` (dedupliziert über `note.reported`) ⇒ Sperre kann sich auf weitere Accounts ausweiten |
+| **Anderer Spieler am selben PC** | `locked()` prüft nicht, *für wen* die Note gilt ⇒ auch er sieht den Bannscreen, bis der Check für ihn `banned=false` liefert (dann wird die Datei gelöscht und die Ursprungssperre ist weg) |
+
+**Nebeneffekt:** `fwm-sperre.json` enthält Name, UUID und alle gemeldeten Alt-Accounts im Klartext (keine Dateirechte-Härtung, vgl. F-06), und `note.reported` wächst unbegrenzt (jeder Alt-Account ein Datei-Schreibvorgang).
+
+### 7.6 Server-Bans durch Automatisierung (separates Thema)
+
+Der Mod kann einen **nicht** beim Hersteller sperren, aber auf dem Spielserver auffallen:
+
+- Sell-Makro klickt im GUI mit `min(30, latency/50 + 8)` Ticks Abstand (0,4–1,5 s), **ohne Jitter** (`controller/SellController.java:225–231`).
+- Spawner-Makro arbeitet im festen `spawnerClickDelayTicks`-Takt über ganze Runden (`game/SpawnerMacro.java:903–911`).
+- Auto-TPA akzeptiert `/tpaccept` nach `autoTpaDelayTicks` vollautomatisch (`game/AutoTpa.java:59–77`).
+- Chatbefehle (`/ignore`, Verkaufsbefehle, `/msg`) werden programmatisch gesendet (`chat/Messages.java:269`, `controller/SellController.java:107`, `ui/panel/MessagesPanel.java:988`).
+
+Das ist ein **Regel-/Fairness-Risiko** (Anti-Makro-/Anti-Cheat-Regeln), kein Exploit. Der Mod verschleiert die Automatisierung nicht (keine Randomisierung, keine Humanisierung).
+
+### 7.7 Empfehlungen für das Sperr-System
+
+1. Antwort **signieren** (Ed25519, Public Key im Jar) – sonst ist jeder MITM ein Ban.
+2. Fehlerhafte/fehlende Datei ⇒ **fail-open**, nicht fail-closed.
+3. Sperre an die Identität binden: `locked()` nur `true`, wenn `note.uuid.equals(selfUuid())`.
+4. Alt-Meldungen opt-in, dokumentiert, Liste begrenzt und mit Löschfrist.
+5. Ban-Endpunkt auf eine **feste** URL (nicht `apiBaseUrl` aus der Config).
+6. UI: Grund, Datum und Widerspruchsweg anzeigen; Bannscreen nur bei echter `banned=true`-Antwort.
+
+---
+
+## 8. Anhang
+
+### 8.1 Dateien in diesem Repo
 
 ```
 fwm-1.10.6.6_MC-26.3.jar     Original-Artefakt (unverändert)
 decompiled/                  382 rekonstruierte Pseudo-Java-Dateien (Paketstruktur wie im Jar)
 evidence/                    Bytecode-Listings der sicherheitsrelevanten Methoden
+                             (u. a. ModBan.tick.txt, ModBan.locked.txt, Design.open.txt)
 tools/                       Decompiler + Analyseskripte (Python 3, Abhängigkeit: jawa)
 SECURITY-REVIEW.md           dieser Bericht
 ```
 
-### 7.2 Reproduktion
+### 8.2 Reproduktion
 
 ```bash
 pip install jawa
@@ -395,7 +502,7 @@ grep -rn "followRedirects\|Authorization" decompiled/net/friendswithmoney/fwm/ne
 grep -rn "ban/check\|presence/lookup\|identify" decompiled/ | head
 ```
 
-### 7.3 Grenzen
+### 8.3 Grenzen
 
 - Pseudocode-Decompiler: 28 von 3.968 Methoden mit Code nicht rekonstruierbar (überwiegend UI-Rendering/Enum-Initialisierung); diese wurden bei Bedarf im Bytecode geprüft, können aber theoretisch Details verbergen.
 - Keine Laufzeitanalyse, kein Traffic-Mitschnitt, kein Fuzzing der Bild-/JSON-Parser.

@@ -1,0 +1,59 @@
+// net/friendswithmoney/fwm/net/ModBan vClassVersion(major=69, minor=0)
+field GSON Lcom/google/gson/Gson;
+field CHECK_EVERY_MS J
+field RETRY_MS J
+field note Lnet/friendswithmoney/fwm/net/ModBan$Note;
+field loaded Z
+field nextCheck J
+field busy Z
+
+=== locked()Z
+      0 getstatic        net.ModBan.loaded : Z
+      3 ifne             9
+      6 invokestatic     net.ModBan.load()V
+      9 getstatic        net.ModBan.note : Lnet/friendswithmoney/fwm/net/ModBan$Note;
+     12 ifnull           19
+     15 iconst_1         
+     16 goto             20
+     19 iconst_0         
+     20 ireturn          
+
+=== load()V
+  [try 4..68 handler 71 type 94]
+      0 iconst_1         
+      1 putstatic        net.ModBan.loaded : Z
+      4 invokestatic     net.ModBan.file()Ljava/nio/file/Path;
+      7 astore_0         
+      8 aload_0          
+      9 iconst_0         
+     10 anewarray        57
+     13 invokestatic     Files.exists(Ljava/nio/file/Path;[Ljava/nio/file/LinkOption;)Z
+     16 ifeq             68
+     19 getstatic        net.ModBan.GSON : Lcom/google/gson/Gson;
+     22 aload_0          
+     23 getstatic        StandardCharsets.UTF_8 : Ljava/nio/charset/Charset;
+     26 invokestatic     Files.readString(Ljava/nio/file/Path;Ljava/nio/charset/Charset;)Ljava/lang/String;
+     29 ldc              net/friendswithmoney/fwm/net/ModBan$Note
+     31 invokevirtual    Gson.fromJson(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;
+     34 checkcast        net/friendswithmoney/fwm/net/ModBan$Note
+     37 putstatic        net.ModBan.note : Lnet/friendswithmoney/fwm/net/ModBan$Note;
+     40 getstatic        net.ModBan.note : Lnet/friendswithmoney/fwm/net/ModBan$Note;
+     43 ifnull           68
+     46 getstatic        net.ModBan.note : Lnet/friendswithmoney/fwm/net/ModBan$Note;
+     49 getfield         net.ModBan$Note.reported : Ljava/util/List;
+     52 ifnonnull        68
+     55 getstatic        net.ModBan.note : Lnet/friendswithmoney/fwm/net/ModBan$Note;
+     58 new              java/util/ArrayList
+     61 dup              
+     62 invokespecial    ArrayList.<init>()V
+     65 putfield         net.ModBan$Note.reported : Ljava/util/List;
+     68 goto             90
+     71 astore_0         
+     72 new              net/friendswithmoney/fwm/net/ModBan$Note
+     75 dup              
+     76 invokespecial    net.ModBan$Note.<init>()V
+     79 putstatic        net.ModBan.note : Lnet/friendswithmoney/fwm/net/ModBan$Note;
+     82 getstatic        net.ModBan.note : Lnet/friendswithmoney/fwm/net/ModBan$Note;
+     85 ldc              '?'
+     87 putfield         net.ModBan$Note.name : Ljava/lang/String;
+     90 return           
