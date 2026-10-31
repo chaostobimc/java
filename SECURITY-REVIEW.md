@@ -4,7 +4,7 @@
 **Autor/Marke:** „Friends With Money“ / HUGOSMP ([friendswithmoney.net](https://friendswithmoney.net))
 **Datum:** 2026-10-31
 **Art der Prüfung:** Statische Analyse des dekompilierten Client-Codes (Whitebox), keine Laufzeit-/Penetrationstests gegen Backend oder Spielserver.
-**Ergebnis in einem Satz:** Keine Hintertür, kein Remote-Code-Execution, kein Diebstahl von Minecraft-/Launcher-Sessions – aber mehrere Datenschutz-, Härtungs- und Verfügbarkeitsprobleme, darunter eine **stille UUID-/Nutzernamen-Übermittlung an den Hersteller** und ein **servergesteuerter Kill-Switch**.
+**Ergebnis in einem Satz:** Keine Hintertür, kein Remote-Code-Execution, kein Diebstahl von Minecraft-/Launcher-Sessions, **keine Rechte-Eskalation durch Mitspieler** – aber mehrere Datenschutz-, Härtungs- und Verfügbarkeitsprobleme, darunter eine **stille UUID-/Nutzernamen-Übermittlung an den Hersteller**, ein **servergesteuerter Kill-Switch** und eine umgehbare Chat-Heuristik (F-13, Abschnitt 6).
 
 ---
 
@@ -265,14 +265,73 @@ Positiv hervorzuheben: Der Umgang mit dem API-Key (nur an fixe Bot-API, Regex-Va
 | 4 | **F-06/F-07** Key-Datei `600`, Redirects für authentifizierte Calls abschalten | sehr klein |
 | 5 | **F-02/F-08** Sperr-System dokumentieren, exakte Host-Allowlist | klein |
 | 6 | **F-09/F-10/F-11/F-12** Datenverlust, Auto-Aktionen, Badge-Signaturen, Config-Validierung | mittel |
+| 7 | **F-13** Serverzeilen-Heuristik härten (Default deny, Templates, `/nick`-Bypass) | klein |
 
 **Gesamturteil:** Der Mod ist **kein Malware-Fall**: kein Code-Nachladen, keine Prozessausführung, kein Konto-/Session-Diebstahl, keine Klartext-Verbindungen. Die relevanten Probleme sind (a) **Datenschutz** (stille UUID-/Nutzernamen-Übermittlung, Alt-Meldungen, fremde UUIDs), (b) **Verfügbarkeit** (DoS über Bilder/Antwortgrößen) und (c) **Härtung/Transparenz** (Klartext-Key, Redirects, Kill-Switch, Trust-Anzeigen). Für Server-Admins gilt: Der Mod ist clientseitig, erzeugt aber Makro-/Automatisierungsverhalten (Sell-Makro, Spawner-Makro, Auto-TPA, Auto-Klicks) – das ist ein Regel-/Fairness-Thema, kein Server-Sicherheitsrisiko.
 
 ---
 
-## 6. Anhang
+## 6. Ingame-Angreifer: können Mitspieler Rechte erlangen?
 
-### 6.1 Dateien in diesem Repo
+Kurzantwort: **Nein – ein normaler Mitspieler kann sich über den Mod keine Rechte verschaffen.** Es gibt im gesamten Client keinen Pfad, auf dem Spieler-Eingaben (Chat, Namen, Item-Namen, Tab-Liste) zu Befehlen, Dateizugriffen, API-Aufrufen oder „Trust"-Einstufungen werden. Was bleibt, sind **Täuschungs-/Automatik-Risiken** und ein **konfigurationsabhängiger Bypass** der Server-Nachrichten-Erkennung.
+
+### 6.1 Was strukturell ausgeschlossen ist
+
+| Frage | Befund |
+|---|---|
+| Kann ein Spieler einen Befehl auf meinem Client auslösen? | Nur über **Klick-Events aus Chat-Komponenten**, die der *Server/das Plugin* erzeugt – nicht durch reinen Chattext. Alle `sendCommand`-Senken (`AutoTpa`, `Messages`, `StreamerStore`, `SellController`, `SecondChatClicks`) sind geprüft: Spielernamen/-texte werden nie in Befehle interpoliert (Namen sind auf `[A-Za-z0-9_]{3,16}` begrenzt, der TPA-Befehl auf `^/?tpaccept(…)$`). |
+| Kann ein Spieler meinen API-Key / „Mod-Account" übernehmen? | Nein. `fwm-key.json` wird nur beim Start gelesen, nur an die hartkodierte Bot-API gesendet; kein Chat-/Paketpfad liest oder schickt ihn. |
+| Kann ein Spieler „Trusted"/Clan-/FWM-Badges vergeben? | Nein. Badges kommen aus `api.friendswithmoney.net` (Clan-/Fake-Listen) bzw. werden über Mojang-UUID-Lookups zugeordnet (`Presence.decorateTab` → UUID, nicht Name). `FakeTags` markiert *gefälschte* Clan-Tags sogar rot/durchgestrichen. |
+| Kann ein Spieler meinen Client crashen? | Nicht direkt über Chat (Regexe ohne katastrophales Backtracking), aber indirekt über Dritt-Emotes (F-04) – ohne Spielerbezug. |
+| Kann ein Spieler Dateien schreiben/löschen? | Nein – Dateinamen stammen aus UUIDs, Enums, festen Strings; IDs sind regex-validiert. |
+
+### 6.2 Der einzige echte Bypass: Serverzeilen-Heuristik (F-13)
+**Schwere: Mittel (konfigurationsabhängig)** · `net/friendswithmoney/fwm/chat/ServerLine.java` · Beleg: `tools/listing.py … ServerLine tagged startsColoured`
+
+Alle Chat-Parser (Geld/Auktion/TPA/PMs/Sell-Statistik) hängen an einer einzigen Prüfung:
+
+```java
+fromServer(msg) = startsColoured(msg, cfg.serverPrefix /*Default "[HugoSMP]"*/)
+                  && !(rest.matches("^\\s*([.*]?[A-Za-z0-9_]{2,16})\\s*:")        // NAME_COLON
+                       && !SERVER_WORDS.contains(name.toLowerCase()));            // Ausnahmen
+// SERVER_WORDS = { gedroppt, geliefert, achtung, abgeholt, verwendung, sellmulti }
+```
+
+- `startsColoured` verlangt, dass die Zeile **mit dem konfigurierten Präfix beginnt** und dessen Buchstaben **eingefärbt** sind (Server-typisch) – reiner Spielertext kann das nicht, weil die Zeile mit Rang/Name beginnt.
+- **Aber:** Beginnt auf dem Server auch der normale Spieler-Chat mit `[HugoSMP] …` (das ist bei einem globalen Server-Tag üblich), dann ist die **Sechs-Wörter-Liste die einzige Barriere**. `NAME_COLON` prüft nur den ersten Token nach dem Präfix.
+- Konsequenz: Ein Spieler, dessen **Nickname** (z. B. via `/nick`) exakt `Achtung`, `Gedroppt`, `Geliefert` … lautet, erzeugt eine Zeile `[HugoSMP] Achtung: …`, die als **Serverzeile** durchgeht. Damit sind Fälschungen möglich, u. a.:
+  - `Achtung: Du hast $1.000.000 von Notch erhalten` → `MoneyEvents` (`matcher.find()` + `fromServer`) bucht eine **Fake-Einnahme** in HUD/Verlauf,
+  - gefälschte Auktions-/Gebots-Zeilen (`Auction.accept`), TPA-Zustände (`TpaWatch`), Verkaufsstatistiken (`SellStats`).
+- Praktische Folge: Betrugsmasche „schau, dein Overlay zeigt die Zahlung" bzw. falsche „Trusted"-Kommunikation.
+
+**Gegenmaßnahmen**
+1. Exakte Nachrichten-Templates statt `find()`-Substrings (Anker `^…$` nur bei vollständig bekannten Servertexten).
+2. `SERVER_WORDS` → Whitelist kompletter Zeilenanfänge inkl. fester Rang-Präfixe; unbekannte `Wort:`-Zeilen grundsätzlich als Spielertext behandeln (Default deny statt Default allow).
+3. Bei Geld-/Auktionsereignissen zusätzlich Server-API-Zustand (AH/Market) prüfen, bevor gebucht wird.
+4. Test auf dem Server: (a) Beginnt eine normale Chat-Zeile roh mit `[HugoSMP]`? (b) Ist `/nick` erlaubt? (c) Sind die sechs Wörter als Nick frei? Wenn (a)=nein, ist der Bypass nicht anwendbar.
+
+### 6.3 Weitere spielernahe Vektoren (kein Rechte-Gewinn, aber Missbrauch)
+
+| Vektor | Bewertung |
+|---|---|
+| **Klick-Befehl im Zweit-Chat** (`SecondChatClicks.run` → `sendCommand`): führt `RunCommand`-Klick-Events ohne Rückfrage aus. Vanilla-Spielerchat kann keine Klick-Events tragen; auf Servern mit Chat-/JSON-Plugins kann ein Spieler aber „Klick hier für Belohnung" bauen → ein Klick = `/pay …`. URLs werden vom Mod **nie** geöffnet (kein `OpenUrl` im Code) – Phishing-Links sind also kein Mod-Problem. | Niedrig; Bestätigungsdialog empfohlen |
+| **Sell-Makro klickt in jedem Container** (`SellController.sellScreen()` prüft nur „nicht Inventar", **keinen Titel**) → wird während des Makros ein fremdes GUI geöffnet (Trade/Shop/Plugin-GUI), klickt der Mod dort auf `sellButtonSlot`. `SpawnerMacro` prüft dagegen den Titel auf „spawner". | Niedrig (braucht serverseitige Aktion); Titelprüfung ergänzen |
+| **Giveaway-Teilnahme per PM** (`Giveaway.accept` ohne `fromServer`, aber mit striktem PM-Parser): Wer das Codewort kennt, kann sich eintragen – by design. | Info |
+| **PM-Absender** ist **nicht** fälschbar: `Messages.parse` nutzt einen vollständigen Regex-Match (`matches()`) auf `[Nachricht] A → B: Text`, der Absender ist die erste Gruppe. Nur der **Text** ist frei wählbar (wie in jedem Chat). | OK |
+| **Auto-TPA** akzeptiert nur Namen aus der eigenen Allowlist und validiert das Kommando per Regex; Wildcards greifen nicht. | OK |
+| **Server (nicht Spieler)** kann alles oben jederzeit selbst: Er erzeugt Styling, Klick-Events und beliebige Zeilen. Der Mod vertraut dem Server-Output – das ist bei einem Client-Mod ohne Signaturprüfung unvermeidbar, sollte aber bewusst sein. | Design-Hinweis |
+
+### 6.4 Fazit für die Praxis
+
+- **Rechte-Eskalation (Ops/Server-Ränge/Mod-Key): nicht möglich.**
+- **Realistisch:** Ein Mitspieler kann – bei passendem Chat-Format und `/nick` – **Systemmeldungen fälschen** und damit dein Geld-/Auktions-Overlay täuschen, oder dich per präpariertem Klick-Event zu einem Befehl verleiten. Beides ist Social Engineering mit einem zusätzlichen Klick bzw. einer Server-Fehlkonfiguration, kein technischer Rechte-Gewinn.
+- Wer den Mod auf einem **fremden** Server nutzt (statt HugoSMP), sollte `serverPrefix` leer lassen bzw. die Parser-Features abschalten – dann sind die Chat-Parser wirkungslos.
+
+---
+
+## 7. Anhang
+
+### 7.1 Dateien in diesem Repo
 
 ```
 fwm-1.10.6.6_MC-26.3.jar     Original-Artefakt (unverändert)
@@ -282,7 +341,7 @@ tools/                       Decompiler + Analyseskripte (Python 3, Abhängigkei
 SECURITY-REVIEW.md           dieser Bericht
 ```
 
-### 6.2 Reproduktion
+### 7.2 Reproduktion
 
 ```bash
 pip install jawa
@@ -301,7 +360,7 @@ grep -rn "followRedirects\|Authorization" decompiled/net/friendswithmoney/fwm/ne
 grep -rn "ban/check\|presence/lookup\|identify" decompiled/ | head
 ```
 
-### 6.3 Grenzen
+### 7.3 Grenzen
 
 - Pseudocode-Decompiler: 28 von 3.968 Methoden mit Code nicht rekonstruierbar (überwiegend UI-Rendering/Enum-Initialisierung); diese wurden bei Bedarf im Bytecode geprüft, können aber theoretisch Details verbergen.
 - Keine Laufzeitanalyse, kein Traffic-Mitschnitt, kein Fuzzing der Bild-/JSON-Parser.
