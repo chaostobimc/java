@@ -4,9 +4,11 @@
 **Autor/Marke:** „Friends With Money“ / HUGOSMP ([friendswithmoney.net](https://friendswithmoney.net))
 **Datum:** 2026-10-31
 **Art der Prüfung:** Statische Analyse des dekompilierten Client-Codes (Whitebox), keine Laufzeit-/Penetrationstests gegen Backend oder Spielserver.
-**Ergebnis in einem Satz:** Keine Hintertür, kein Remote-Code-Execution, kein Diebstahl von Minecraft-/Launcher-Sessions, **keine Rechte-Eskalation durch Mitspieler** – aber mehrere Datenschutz-, Härtungs- und Verfügbarkeitsprobleme, darunter eine **stille UUID-/Nutzernamen-Übermittlung an den Hersteller**, ein **servergesteuerter Kill-Switch**, eine umgehbare Chat-Heuristik (F-14, Abschnitt 6) und ein namensbasiertes Badge-Spoofing (F-13). Die Sperrmechanik (Abschnitt 7) ist rein clientseitig und lässt sich lokal aushebeln.
+**Ergebnis in einem Satz:** Keine Hintertür, kein Remote-Code-Execution, kein Diebstahl von Minecraft-/Launcher-Sessions, **keine Rechte-Eskalation durch Mitspieler** – aber mehrere Datenschutz-, Härtungs- und Verfügbarkeitsprobleme, darunter eine **stille UUID-/Nutzernamen-Übermittlung an den Hersteller**, ein **servergesteuerter Kill-Switch**, eine umgehbare Chat-Heuristik (F-14, Abschnitt 6) und ein namensbasiertes Badge-Spoofing (F-13). Die Sperrmechanik (Abschnitt 7) ist rein clientseitig und lässt sich lokal aushebeln, und mehrere API-Endpunkte sind **ohne jede Authentifizierung** erreichbar (F-16/F-17).
 
 ---
+
+> **Neu:** `VULNERABILITIES.md` enthält die konsolidierte Gesamtliste (F-01…F-17) und die vollständige **API-Endpunkt-Matrix** (welcher Endpunkt Authentifizierung verlangt, was er schreibt, was ein Angreifer damit tun kann).
 
 ## 1. Vorgehen und Werkzeuge
 
@@ -262,6 +264,37 @@ if (u2 != null && FWM.contains(u2)) return name.copy().append(rowLogo());   // �
 
 **Gegenmaßnahmen:** Signaturprüfung, fail-open bei Lesefehlern, Bindung an die eigene UUID, `lockedBy`/Host fest verdrahten, Alt-Report opt-in.
 
+### F-16 – Unauthentifizierte Schreib-Endpunkte: Identitäten frei fälschbar
+**Schwere: Mittel (backend-abhängig)** · *CWE-306/CWE-345* · `ModBan.java:103,113`, `Presence.java:365,401`, `ModId.java:69`, `Giveaways.java:91,191` · Matrix: `VULNERABILITIES.md` § 3
+
+Der Client sendet bei **sechs** POST-Aufrufen ausschließlich selbst zusammengestellte Identitätsdaten – ohne Key, Token, Signatur oder Nonce:
+
+```java
+POST /api/mod/ban/check        {"uuid":…, "name":…, "lockedBy": <fremde UUID>|null}
+POST /api/mod/ban/alt          {"uuid":…, "name":…, "of":…, "ofUuid":…}
+POST /api/mod/presence         {"uuid":…, "name":…}
+POST /api/mod/presence/lookup  {"uuids":[… ≤ 200]}
+POST /api/mod/identify         {"uuid":…, "name":…, "modId":…, "modVersion":…}
+POST /api/mod/giveaways/{id}/join {"uuid":…, "name":…, "modId":…}
+```
+
+- **`/ban/alt` ist ban-relevant:** ein beliebiger Client (auch `curl`) kann jedes `uuid`/`name`-Paar als „Zweitaccount von `<gesperrt>`“ melden. Ob das Backend daraus Sperren/Flags ableitet, ist im Client nicht sichtbar – wenn ja, können Unbeteiligte andere Spieler anschwärzen.
+- **`lockedBy` kommt vom Client** und wird ungeprüft mitgesendet (`ModBan.java:112`).
+- **`modId`** wird lokal nur per Regex `fwm_[A-Z2-9]{8}` erzeugt, aber nie kryptografisch gebunden – jede Installation kann jede ID behaupten.
+- Antworten werden **nicht signiert** und nicht gegen die Anfrage geprüft (keine Nonce, kein Zeitstempel) → Replay und Fälschung möglich.
+
+**Gegenmaßnahmen (Client):** Signatur/Nonce, `lockedBy` weglassen. **(Backend):** alle `/api/mod/*`-Felder als nicht vertrauenswürdig behandeln, `uuid`↔`name` serverseitig verifizieren, Reports nicht automatisch in Sperren umsetzen, Rate-Limits.
+
+---
+
+### F-17 – Mitgliedschafts-Orakel und fremde Giveaway-Daten
+**Schwere: Niedrig** · *CWE-200/CWE-639* · `Presence.java:380–410`, `Giveaways.java:91`
+
+- `POST /api/mod/presence/lookup` nimmt **bis zu 200 UUIDs** pro Request entgegen (unauthentifiziert) und liefert die Teilmenge der FWM-Mitglieder zurück → beliebige Spieler listenweise auf Mitgliedschaft prüfen (Datenschutz + Vorbereitung für F-13).
+- `GET /api/mod/giveaways?uuid=<32hex>` liefert aktive/vergangene Giveaways **jeder** UUID, nicht nur der eigenen.
+
+**Gegenmaßnahmen:** Lookup authentifizieren bzw. stark limitieren, Giveaway-Abfrage an die verifizierte Identität binden.
+
 ---
 
 ## 4. Was geprüft und **nicht** gefunden wurde (Negativbefunde)
@@ -300,6 +333,8 @@ Positiv hervorzuheben: Der Umgang mit dem API-Key (nur an fixe Bot-API, Regex-Va
 | 7 | **F-13** Badge nur per UUID vergeben (Namens-Fallback entfernen), Nicknames reservieren | klein |
 | 8 | **F-14** Serverzeilen-Heuristik härten (Default deny, Templates, `/nick`-Bypass) | klein |
 | 9 | **F-15** Sperr-System: Signatur, fail-open, Bindung an eigene UUID, feste Ban-URL | klein–mittel |
+| 10 | **F-16** Schreib-Endpunkte authentifizieren/Signieren; `/ban/alt` nicht als Beweis werten | mittel (Client + Backend) |
+| 11 | **F-17** `/presence/lookup` und Giveaway-Abfrage limitieren/authentifizieren | klein (Backend) |
 
 **Gesamturteil:** Der Mod ist **kein Malware-Fall**: kein Code-Nachladen, keine Prozessausführung, kein Konto-/Session-Diebstahl, keine Klartext-Verbindungen. Die relevanten Probleme sind (a) **Datenschutz** (stille UUID-/Nutzernamen-Übermittlung, Alt-Meldungen, fremde UUIDs), (b) **Verfügbarkeit** (DoS über Bilder/Antwortgrößen) und (c) **Härtung/Transparenz** (Klartext-Key, Redirects, Kill-Switch, Trust-Anzeigen). Für Server-Admins gilt: Der Mod ist clientseitig, erzeugt aber Makro-/Automatisierungsverhalten (Sell-Makro, Spawner-Makro, Auto-TPA, Auto-Klicks) – das ist ein Regel-/Fairness-Thema, kein Server-Sicherheitsrisiko.
 
