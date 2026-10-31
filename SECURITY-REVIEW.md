@@ -4,7 +4,7 @@
 **Autor/Marke:** „Friends With Money“ / HUGOSMP ([friendswithmoney.net](https://friendswithmoney.net))
 **Datum:** 2026-10-31
 **Art der Prüfung:** Statische Analyse des dekompilierten Client-Codes (Whitebox), keine Laufzeit-/Penetrationstests gegen Backend oder Spielserver.
-**Ergebnis in einem Satz:** Keine Hintertür, kein Remote-Code-Execution, kein Diebstahl von Minecraft-/Launcher-Sessions, **keine Rechte-Eskalation durch Mitspieler** – aber mehrere Datenschutz-, Härtungs- und Verfügbarkeitsprobleme, darunter eine **stille UUID-/Nutzernamen-Übermittlung an den Hersteller**, ein **servergesteuerter Kill-Switch** und eine umgehbare Chat-Heuristik (F-13, Abschnitt 6).
+**Ergebnis in einem Satz:** Keine Hintertür, kein Remote-Code-Execution, kein Diebstahl von Minecraft-/Launcher-Sessions, **keine Rechte-Eskalation durch Mitspieler** – aber mehrere Datenschutz-, Härtungs- und Verfügbarkeitsprobleme, darunter eine **stille UUID-/Nutzernamen-Übermittlung an den Hersteller**, ein **servergesteuerter Kill-Switch**, eine umgehbare Chat-Heuristik (F-14, Abschnitt 6) und ein namensbasiertes Badge-Spoofing (F-13).
 
 ---
 
@@ -230,6 +230,26 @@ Der Mod blendet Badges/Logos und „Trusted“-Kennzeichnungen ein, die ausschli
 `apiBaseUrl`, `membersApiUrl`, `marketApiUrl`, `rtpApiUrl`, `marketHistoryUrl` usw. werden unverändert aus `fwm.json` übernommen (nur `clamp()` für Zahlen). Damit lassen sich Marktpreise, Waypoints, „News“ und Clan-Listen auf einen Angreiferhost umbiegen (Wirtschafts-/Social-Engineering-Angriff, z. B. via geteilte Config). Der API-Key ist davon **nicht** betroffen (siehe F-06).
 **Empfehlung:** URL-Felder auf `https` + Host-Allowlist prüfen oder als „advanced/experimental“ kennzeichnen; beim Laden warnen, wenn Hosts vom Default abweichen.
 
+### F-13 – Badge-/Trust-Vergabe fällt auf Anzeigenamen zurück (Identitäts-Spoofing)
+**Schwere: Mittel** · *CWE-290/CWE-345* · `net/friendswithmoney/fwm/net/Presence.java:117–198, 456–482`
+
+```java
+// decorateTabNow(uuid, name)
+if (FWM.contains(uuid)) return name.copy().append(rowLogo());     // 1) echte Profil-UUID  ✅
+String text = ServerLine.strip(name.getString());
+String n    = rowName(text);                                      // 2) Anzeigename aus der Tab-Zeile
+UUID   u2   = NAME_IDS.get(n.toLowerCase(Locale.ROOT));           //    Name→UUID via Mojang-Bulk-Lookup
+if (u2 != null && FWM.contains(u2)) return name.copy().append(rowLogo());   // ← Name entscheidet
+// 3) zusätzlich: Substring-Suche des Namens eines gerade online befindlichen Mitglieds im Text
+```
+
+- Primär ist die Prüfung korrekt UUID-basiert. **Fällt sie negativ aus, entscheidet der sichtbare Text:** Der erste Namens-Token der Tab-Zeile wird über `https://api.minecraftservices.com/…/lookup/bulk/byname` zur **Premium-UUID** aufgelöst und erneut gegen die FWM-Mitgliederliste geprüft. Zusätzlich genügt es, wenn der Anzeigetext den Namen eines *gerade online befindlichen* Mitglieds als ganzes Wort enthält.
+- Wer seinen **Anzeigenamen** auf einen Mitgliedsnamen bringt (Nickname-Plugin, `/nick`, Offline-Mode-Name, serverseitig gesetzter Tab-Text), erhält also das FWM-Logo **ohne Mitglied zu sein**.
+- Betroffen ist nur die **Anzeige** (Chat-Badge, Tab-Logo, Nametag-Icon) und damit das Vertrauenssignal, mit dem in der Community gehandelt wird – **nicht** der `fwm_…`-Key, nicht die Ticket-API, nicht Serverrechte.
+- Abgrenzung: `TrustedClans.playerLabel(UUID)` ist sauber UUID-basiert (`TrustedClans.java:401–418`); `FakeList`/`FakeTags` markieren Fälscher (name-/textbasiert, Daten aus der API).
+
+**Gegenmaßnahmen:** Badge ausschließlich bei UUID-Match (oder wenn der Server ein signiertes/rollenbewertes Attribut liefert); Namens-Fallback entfernen; auf dem Server Nicknames sperren, die Mitgliedsnamen entsprechen; ggf. Badge im UI als „vom Client erkannt“ kennzeichnen.
+
 ---
 
 ## 4. Was geprüft und **nicht** gefunden wurde (Negativbefunde)
@@ -265,7 +285,8 @@ Positiv hervorzuheben: Der Umgang mit dem API-Key (nur an fixe Bot-API, Regex-Va
 | 4 | **F-06/F-07** Key-Datei `600`, Redirects für authentifizierte Calls abschalten | sehr klein |
 | 5 | **F-02/F-08** Sperr-System dokumentieren, exakte Host-Allowlist | klein |
 | 6 | **F-09/F-10/F-11/F-12** Datenverlust, Auto-Aktionen, Badge-Signaturen, Config-Validierung | mittel |
-| 7 | **F-13** Serverzeilen-Heuristik härten (Default deny, Templates, `/nick`-Bypass) | klein |
+| 7 | **F-13** Badge nur per UUID vergeben (Namens-Fallback entfernen), Nicknames reservieren | klein |
+| 8 | **F-14** Serverzeilen-Heuristik härten (Default deny, Templates, `/nick`-Bypass) | klein |
 
 **Gesamturteil:** Der Mod ist **kein Malware-Fall**: kein Code-Nachladen, keine Prozessausführung, kein Konto-/Session-Diebstahl, keine Klartext-Verbindungen. Die relevanten Probleme sind (a) **Datenschutz** (stille UUID-/Nutzernamen-Übermittlung, Alt-Meldungen, fremde UUIDs), (b) **Verfügbarkeit** (DoS über Bilder/Antwortgrößen) und (c) **Härtung/Transparenz** (Klartext-Key, Redirects, Kill-Switch, Trust-Anzeigen). Für Server-Admins gilt: Der Mod ist clientseitig, erzeugt aber Makro-/Automatisierungsverhalten (Sell-Makro, Spawner-Makro, Auto-TPA, Auto-Klicks) – das ist ein Regel-/Fairness-Thema, kein Server-Sicherheitsrisiko.
 
@@ -285,7 +306,7 @@ Kurzantwort: **Nein – ein normaler Mitspieler kann sich über den Mod keine Re
 | Kann ein Spieler meinen Client crashen? | Nicht direkt über Chat (Regexe ohne katastrophales Backtracking), aber indirekt über Dritt-Emotes (F-04) – ohne Spielerbezug. |
 | Kann ein Spieler Dateien schreiben/löschen? | Nein – Dateinamen stammen aus UUIDs, Enums, festen Strings; IDs sind regex-validiert. |
 
-### 6.2 Der einzige echte Bypass: Serverzeilen-Heuristik (F-13)
+### 6.2 Der einzige echte Bypass: Serverzeilen-Heuristik (F-14)
 **Schwere: Mittel (konfigurationsabhängig)** · `net/friendswithmoney/fwm/chat/ServerLine.java` · Beleg: `tools/listing.py … ServerLine tagged startsColoured`
 
 Alle Chat-Parser (Geld/Auktion/TPA/PMs/Sell-Statistik) hängen an einer einzigen Prüfung:
@@ -310,7 +331,21 @@ fromServer(msg) = startsColoured(msg, cfg.serverPrefix /*Default "[HugoSMP]"*/)
 3. Bei Geld-/Auktionsereignissen zusätzlich Server-API-Zustand (AH/Market) prüfen, bevor gebucht wird.
 4. Test auf dem Server: (a) Beginnt eine normale Chat-Zeile roh mit `[HugoSMP]`? (b) Ist `/nick` erlaubt? (c) Sind die sechs Wörter als Nick frei? Wenn (a)=nein, ist der Bypass nicht anwendbar.
 
-### 6.3 Weitere spielernahe Vektoren (kein Rechte-Gewinn, aber Missbrauch)
+### 6.3 UUID manipulieren oder mit gecracktem Client unter gleichem Namen joinen?
+
+| Szenario | Ergebnis |
+|---|---|
+| **Client schickt gefälschte UUID an die FWM-API** | Technisch trivial: `POST /api/mod/presence` (`Presence.java:365`) und `/presence/lookup` (:401), `/identify`, `/ban/check` nehmen `{uuid,name}` **ohne Credential** entgegen (Token-Parameter = `null`). Ein modifizierter Client (oder ein `curl`) kann beliebige Werte senden. Auswirkungen hängen rein am Backend (nicht prüfbar) – **diese Endpunkte dürfen serverseitig nie als Autorisierung dienen**. Für Badges anderer Spieler zählt dagegen die API-Antwort (Mitgliederliste), nicht der Client-Post. |
+| **`fwm-id.json` (modId) fälschen** | Datei ist nur per Regex `fwm_[A-Z2-9]{8}` geprüft, also frei editierbar. Sie wird ausschließlich beim Giveaway-Join mitgesendet (`Giveaways.java:190`) – kein Rechtegewinn. |
+| **Gecracktes Minecraft auf Online-Mode-Server (HugoSMP)** | Nicht möglich: Der Server verifiziert die Mojang-Session; Name/UUID sind nicht wählbar. Die UUID kommt vom Server, nicht vom Client. |
+| **Gecracktes Minecraft auf Offline-Mode-Server** | Name frei wählbar, aber UUID = `MD5("OfflinePlayer:"+Name)` – **andere** UUID als der Premium-Account ⇒ UUID-Badge matcht nicht. **Aber:** über den Namens-Fallback (F-13) erscheint das FWM-Logo trotzdem, wenn der Anzeigename einem Mitglied entspricht. |
+| **Nickname-Plugin auf HugoSMP** | Gleicher Effekt wie oben: Anzeigename = Mitgliedsname ⇒ Badge, obwohl die UUID nicht in der Liste steht. Praktisch der wahrscheinlichste Weg. |
+| **Echte „Mod-Rechte“ (Tickets/`/mod/v1/*`)** | Nur mit dem lokalen `fwm_…`-Key (Bearer). Der ist an keinen Namen/UUID gebunden, liegt in `fwm-key.json` und ist über Ingame-Wege nicht erreichbar. |
+| **Server-Ränge/Ops** | Ausschließlich Sache des Servers; der Mod sendet nie `/op` o. ä. |
+
+**Für Serverbetreiber:** `online-mode=true` **und** korrektes IP-Forwarding (Velocity/BungeeCord mit Secret, keine offene `proxy-protocol`-Vertrauensstellung) – sonst ist Namens-Spoofing schon auf Serverebene möglich, unabhängig vom Mod.
+
+### 6.4 Weitere spielernahe Vektoren (kein Rechte-Gewinn, aber Missbrauch)
 
 | Vektor | Bewertung |
 |---|---|
@@ -321,7 +356,7 @@ fromServer(msg) = startsColoured(msg, cfg.serverPrefix /*Default "[HugoSMP]"*/)
 | **Auto-TPA** akzeptiert nur Namen aus der eigenen Allowlist und validiert das Kommando per Regex; Wildcards greifen nicht. | OK |
 | **Server (nicht Spieler)** kann alles oben jederzeit selbst: Er erzeugt Styling, Klick-Events und beliebige Zeilen. Der Mod vertraut dem Server-Output – das ist bei einem Client-Mod ohne Signaturprüfung unvermeidbar, sollte aber bewusst sein. | Design-Hinweis |
 
-### 6.4 Fazit für die Praxis
+### 6.5 Fazit für die Praxis
 
 - **Rechte-Eskalation (Ops/Server-Ränge/Mod-Key): nicht möglich.**
 - **Realistisch:** Ein Mitspieler kann – bei passendem Chat-Format und `/nick` – **Systemmeldungen fälschen** und damit dein Geld-/Auktions-Overlay täuschen, oder dich per präpariertem Klick-Event zu einem Befehl verleiten. Beides ist Social Engineering mit einem zusätzlichen Klick bzw. einer Server-Fehlkonfiguration, kein technischer Rechte-Gewinn.
