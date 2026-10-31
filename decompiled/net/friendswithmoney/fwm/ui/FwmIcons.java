@@ -1,0 +1,1115 @@
+// class net/friendswithmoney/fwm/ui/FwmIcons  (classfile vClassVersion(major=69, minor=0))
+// extends java/lang/Object
+field SIZE I;
+field KEYS [Ljava/lang/String;;
+field PIXEL Ljava/util/Map;;
+field FINE Ljava/util/Map;;
+private void <init>() {
+    return;
+}
+
+private static org.joml.Matrix3x2fStack pixel(client.gui.GuiGraphicsExtractor ctx, String key, int x, int y, int color) {
+    v5 = (([I)ui.FwmIcons.FINE.get(key));
+    if (v5 == null) goto L110;
+    v6 = ctx.pose();
+    v6.pushMatrix();
+    v6.translate(((f)x), ((f)y));
+    v6.scale(0.3333333432674408, 0.3333333432674408);
+    v7 = 0;
+    L54:
+    if ((v7 + 3) >= v5.length) goto L102;
+    ctx.fill(v5[v7], v5[(v7 + 1)], v5[(v7 + 2)], v5[(v7 + 3)], color);
+    v7 = v7 + 4;
+    goto L54;
+    L102:
+    v6.popMatrix();
+    return 1;
+    L110:
+    v6 = (([I)ui.FwmIcons.PIXEL.get(key));
+    if (v6 != null) goto L131;
+    return 0;
+    L131:
+    v7 = ctx.pose();
+    v7.pushMatrix();
+    v7.translate(((f)x), ((f)y));
+    v7.scale(0.6666666865348816, 0.6666666865348816);
+    v8 = 0;
+    L166:
+    if ((v8 + 3) >= v6.length) goto L214;
+    ctx.fill(v6[v8], v6[(v8 + 1)], v6[(v8 + 2)], v6[(v8 + 3)], color);
+    v8 = v8 + 4;
+    goto L166;
+    L214:
+    v7.popMatrix();
+    return 1;
+}
+
+// DECOMPILE ERROR in draw: 'dict' object has no attribute 'op_type'
+private static void sword(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    v4 = 0;
+    L3:
+    if (v4 >= 8) goto L49;
+    ctx.fill(((x + 6) + v4), ((y + 9) - v4), ((x + 8) + v4), ((y + 11) - v4), c);
+    v4 = v4 + 1;
+    goto L3;
+    L49:
+    ctx.fill((x + 3), (y + 9), (x + 9), (y + 11), c);
+    ctx.fill((x + 5), (y + 7), (x + 7), (y + 13), c);
+    ctx.fill((x + 2), (y + 12), (x + 5), (y + 15), c);
+    return;
+}
+
+private static void spawnerMacro(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ui.FwmIcons.box(ctx, x, y, 16, 16, c);
+    ctx.fill((x + 5), y, (x + 6), (y + 3), c);
+    ctx.fill((x + 10), y, (x + 11), (y + 3), c);
+    ctx.fill((x + 5), (y + 13), (x + 6), (y + 16), c);
+    ctx.fill((x + 10), (y + 13), (x + 11), (y + 16), c);
+    v4 = 0;
+    L88:
+    if (v4 >= 4) goto L132;
+    ctx.fill(((x + 6) + v4), ((y + 4) + v4), ((x + 7) + v4), ((y + 12) - v4), c);
+    v4 = v4 + 1;
+    goto L88;
+    L132:
+    return;
+}
+
+private static void coin(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ctx.fill((x + 5), (y + 1), (x + 11), (y + 2), c);
+    ctx.fill((x + 5), (y + 14), (x + 11), (y + 15), c);
+    ctx.fill((x + 3), (y + 2), (x + 5), (y + 3), c);
+    ctx.fill((x + 11), (y + 2), (x + 13), (y + 3), c);
+    ctx.fill((x + 3), (y + 13), (x + 5), (y + 14), c);
+    ctx.fill((x + 11), (y + 13), (x + 13), (y + 14), c);
+    ctx.fill((x + 2), (y + 3), (x + 3), (y + 5), c);
+    ctx.fill((x + 13), (y + 3), (x + 14), (y + 5), c);
+    ctx.fill((x + 2), (y + 11), (x + 3), (y + 13), c);
+    ctx.fill((x + 13), (y + 11), (x + 14), (y + 13), c);
+    ctx.fill((x + 1), (y + 5), (x + 2), (y + 11), c);
+    ctx.fill((x + 14), (y + 5), (x + 15), (y + 11), c);
+    ctx.fill((x + 7), (y + 3), (x + 9), (y + 13), c);
+    ctx.fill((x + 6), (y + 4), (x + 10), (y + 5), c);
+    ctx.fill((x + 5), (y + 5), (x + 7), (y + 7), c);
+    ctx.fill((x + 6), (y + 7), (x + 10), (y + 8), c);
+    ctx.fill((x + 9), (y + 8), (x + 11), (y + 10), c);
+    ctx.fill((x + 6), (y + 10), (x + 10), (y + 11), c);
+    return;
+}
+
+private static void arrows(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ctx.fill((x + 1), (y + 4), (x + 13), (y + 5), c);
+    ctx.fill((x + 10), (y + 2), (x + 11), (y + 7), c);
+    ctx.fill((x + 11), (y + 3), (x + 12), (y + 6), c);
+    ctx.fill((x + 3), (y + 11), (x + 15), (y + 12), c);
+    ctx.fill((x + 5), (y + 9), (x + 6), (y + 14), c);
+    ctx.fill((x + 4), (y + 10), (x + 5), (y + 13), c);
+    return;
+}
+
+private static void smiley(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ctx.fill((x + 5), (y + 1), (x + 11), (y + 2), c);
+    ctx.fill((x + 5), (y + 14), (x + 11), (y + 15), c);
+    ctx.fill((x + 1), (y + 5), (x + 2), (y + 11), c);
+    ctx.fill((x + 14), (y + 5), (x + 15), (y + 11), c);
+    ctx.fill((x + 2), (y + 3), (x + 3), (y + 5), c);
+    ctx.fill((x + 3), (y + 2), (x + 5), (y + 3), c);
+    ctx.fill((x + 11), (y + 2), (x + 13), (y + 3), c);
+    ctx.fill((x + 13), (y + 3), (x + 14), (y + 5), c);
+    ctx.fill((x + 2), (y + 11), (x + 3), (y + 13), c);
+    ctx.fill((x + 3), (y + 13), (x + 5), (y + 14), c);
+    ctx.fill((x + 11), (y + 13), (x + 13), (y + 14), c);
+    ctx.fill((x + 13), (y + 11), (x + 14), (y + 13), c);
+    ctx.fill((x + 5), (y + 5), (x + 7), (y + 8), c);
+    ctx.fill((x + 9), (y + 5), (x + 11), (y + 8), c);
+    ctx.fill((x + 4), (y + 9), (x + 5), (y + 10), c);
+    ctx.fill((x + 11), (y + 9), (x + 12), (y + 10), c);
+    ctx.fill((x + 5), (y + 10), (x + 11), (y + 11), c);
+    return;
+}
+
+private static void layers(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ui.FwmIcons.box(ctx, (x + 5), (y + 1), 10, 8, c);
+    ui.FwmIcons.box(ctx, (x + 3), (y + 4), 10, 8, c);
+    ui.FwmIcons.box(ctx, (x + 1), (y + 7), 10, 8, c);
+    return;
+}
+
+private static void pin(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ctx.fill((x + 5), (y + 1), (x + 11), (y + 2), c);
+    ctx.fill((x + 4), (y + 2), (x + 12), (y + 8), c);
+    ctx.fill((x + 5), (y + 8), (x + 11), (y + 10), c);
+    ctx.fill((x + 6), (y + 10), (x + 10), (y + 12), c);
+    ctx.fill((x + 7), (y + 12), (x + 9), (y + 15), c);
+    return;
+}
+
+private static void info(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ctx.fill((x + 1), (y + 1), (x + 15), (y + 2), c);
+    ctx.fill((x + 1), (y + 14), (x + 15), (y + 15), c);
+    ctx.fill((x + 1), (y + 1), (x + 2), (y + 15), c);
+    ctx.fill((x + 14), (y + 1), (x + 15), (y + 15), c);
+    ctx.fill((x + 7), (y + 4), (x + 9), (y + 6), c);
+    ctx.fill((x + 7), (y + 7), (x + 9), (y + 12), c);
+    return;
+}
+
+private static void gavel(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ctx.fill((x + 2), (y + 2), (x + 10), (y + 7), c);
+    ctx.fill((x + 1), (y + 3), (x + 2), (y + 6), c);
+    ctx.fill((x + 10), (y + 3), (x + 11), (y + 6), c);
+    v4 = 0;
+    L60:
+    if (v4 >= 5) goto L105;
+    ctx.fill(((x + 8) + v4), ((y + 7) + v4), ((x + 10) + v4), ((y + 9) + v4), c);
+    v4 = v4 + 1;
+    goto L60;
+    L105:
+    ctx.fill((x + 1), (y + 13), (x + 9), (y + 15), c);
+    return;
+}
+
+private static void gift(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ctx.fill((x + 1), (y + 5), (x + 15), (y + 8), c);
+    ctx.fill((x + 2), (y + 8), (x + 3), (y + 15), c);
+    ctx.fill((x + 13), (y + 8), (x + 14), (y + 15), c);
+    ctx.fill((x + 2), (y + 14), (x + 14), (y + 15), c);
+    ctx.fill((x + 7), (y + 8), (x + 9), (y + 14), c);
+    ctx.fill((x + 4), (y + 1), (x + 7), (y + 3), c);
+    ctx.fill((x + 9), (y + 1), (x + 12), (y + 3), c);
+    ctx.fill((x + 6), (y + 3), (x + 10), (y + 5), c);
+    return;
+}
+
+private static void extras(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ui.FwmIcons.box(ctx, (x + 1), (y + 1), 14, 14, c);
+    ctx.fill((x + 7), (y + 4), (x + 9), (y + 12), c);
+    ctx.fill((x + 4), (y + 7), (x + 12), (y + 9), c);
+    return;
+}
+
+private static void shield(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ctx.fill((x + 3), (y + 1), (x + 13), (y + 3), c);
+    ctx.fill((x + 3), (y + 3), (x + 5), (y + 9), c);
+    ctx.fill((x + 11), (y + 3), (x + 13), (y + 9), c);
+    ctx.fill((x + 4), (y + 9), (x + 6), (y + 11), c);
+    ctx.fill((x + 10), (y + 9), (x + 12), (y + 11), c);
+    ctx.fill((x + 5), (y + 11), (x + 7), (y + 13), c);
+    ctx.fill((x + 9), (y + 11), (x + 11), (y + 13), c);
+    ctx.fill((x + 7), (y + 13), (x + 9), (y + 15), c);
+    ctx.fill((x + 7), (y + 5), (x + 9), (y + 10), c);
+    return;
+}
+
+private static void note(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ctx.fill((x + 7), (y + 1), (x + 9), (y + 15), c);
+    ctx.fill((x + 4), (y + 3), (x + 13), (y + 5), c);
+    ctx.fill((x + 3), (y + 4), (x + 5), (y + 8), c);
+    ctx.fill((x + 4), (y + 7), (x + 13), (y + 9), c);
+    ctx.fill((x + 11), (y + 8), (x + 13), (y + 12), c);
+    ctx.fill((x + 3), (y + 11), (x + 12), (y + 13), c);
+    return;
+}
+
+private static void envelope(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ui.FwmIcons.box(ctx, x, (y + 3), 16, 10, c);
+    v4 = 0;
+    L16:
+    if (v4 >= 6) goto L89;
+    ctx.fill(((x + 1) + v4), ((y + 4) + v4), ((x + 2) + v4), ((y + 5) + v4), c);
+    ctx.fill(((x + 14) - v4), ((y + 4) + v4), ((x + 15) - v4), ((y + 5) + v4), c);
+    v4 = v4 + 1;
+    goto L16;
+    L89:
+    return;
+}
+
+private static void pickaxe(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ctx.fill((x + 1), (y + 5), (x + 3), (y + 6), c);
+    ctx.fill((x + 3), (y + 3), (x + 5), (y + 5), c);
+    ctx.fill((x + 5), (y + 2), (x + 11), (y + 3), c);
+    ctx.fill((x + 11), (y + 3), (x + 13), (y + 5), c);
+    ctx.fill((x + 13), (y + 5), (x + 15), (y + 6), c);
+    ctx.fill((x + 7), (y + 3), (x + 9), (y + 15), c);
+    return;
+}
+
+private static void bubble(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ui.FwmIcons.box(ctx, (x + 1), (y + 1), 14, 11, c);
+    ctx.fill((x + 3), (y + 12), (x + 7), (y + 13), c);
+    ctx.fill((x + 3), (y + 13), (x + 5), (y + 15), c);
+    ctx.fill((x + 4), (y + 4), (x + 12), (y + 5), c);
+    ctx.fill((x + 4), (y + 7), (x + 9), (y + 8), c);
+    return;
+}
+
+private static void palette(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ctx.fill((x + 4), (y + 1), (x + 12), (y + 2), c);
+    ctx.fill((x + 2), (y + 2), (x + 4), (y + 3), c);
+    ctx.fill((x + 12), (y + 2), (x + 14), (y + 3), c);
+    ctx.fill((x + 1), (y + 3), (x + 2), (y + 5), c);
+    ctx.fill((x + 14), (y + 3), (x + 15), (y + 9), c);
+    ctx.fill(x, (y + 5), (x + 1), (y + 11), c);
+    ctx.fill((x + 1), (y + 11), (x + 2), (y + 13), c);
+    ctx.fill((x + 2), (y + 13), (x + 5), (y + 14), c);
+    ctx.fill((x + 5), (y + 14), (x + 10), (y + 15), c);
+    ctx.fill((x + 10), (y + 13), (x + 11), (y + 14), c);
+    ctx.fill((x + 11), (y + 9), (x + 14), (y + 10), c);
+    ctx.fill((x + 10), (y + 10), (x + 11), (y + 13), c);
+    ui.FwmIcons.ring(ctx, (x + 5), (y + 9), 4, c);
+    ctx.fill((x + 3), (y + 5), (x + 5), (y + 7), c);
+    ctx.fill((x + 7), (y + 3), (x + 9), (y + 5), c);
+    ctx.fill((x + 11), (y + 5), (x + 13), (y + 7), c);
+    return;
+}
+
+private static void spawner(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ui.FwmIcons.box(ctx, x, y, 16, 16, c);
+    ctx.fill((x + 5), y, (x + 6), (y + 3), c);
+    ctx.fill((x + 10), y, (x + 11), (y + 3), c);
+    ctx.fill((x + 5), (y + 13), (x + 6), (y + 16), c);
+    ctx.fill((x + 10), (y + 13), (x + 11), (y + 16), c);
+    ui.FwmIcons.box(ctx, (x + 4), (y + 4), 8, 8, c);
+    ctx.fill((x + 6), (y + 6), (x + 7), (y + 8), c);
+    ctx.fill((x + 9), (y + 6), (x + 10), (y + 8), c);
+    ctx.fill((x + 6), (y + 9), (x + 10), (y + 10), c);
+    return;
+}
+
+private static void bell(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ctx.fill((x + 7), (y + 1), (x + 9), (y + 3), c);
+    ctx.fill((x + 5), (y + 3), (x + 11), (y + 4), c);
+    ctx.fill((x + 4), (y + 4), (x + 5), (y + 11), c);
+    ctx.fill((x + 11), (y + 4), (x + 12), (y + 11), c);
+    ctx.fill((x + 2), (y + 11), (x + 14), (y + 12), c);
+    ctx.fill((x + 7), (y + 13), (x + 9), (y + 15), c);
+    return;
+}
+
+private static void ticket(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ui.FwmIcons.box(ctx, x, (y + 3), 16, 10, c);
+    ctx.fill(x, (y + 7), (x + 2), (y + 9), 0);
+    ctx.fill((x + 14), (y + 7), (x + 16), (y + 9), 0);
+    ctx.fill((x + 4), (y + 6), (x + 12), (y + 7), c);
+    ctx.fill((x + 4), (y + 9), (x + 10), (y + 10), c);
+    return;
+}
+
+private static void members(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ui.FwmIcons.ring(ctx, (x + 9), (y + 2), 5, c);
+    ctx.fill((x + 9), (y + 8), (x + 15), (y + 9), c);
+    ctx.fill((x + 14), (y + 9), (x + 15), (y + 14), c);
+    ui.FwmIcons.ring(ctx, (x + 1), (y + 1), 7, c);
+    ctx.fill((x + 1), (y + 9), (x + 9), (y + 10), c);
+    ctx.fill((x + 1), (y + 10), (x + 2), (y + 15), c);
+    ctx.fill((x + 8), (y + 10), (x + 9), (y + 15), c);
+    return;
+}
+
+private static void cog(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ui.FwmIcons.ring(ctx, (x + 2), (y + 2), 12, c);
+    ui.FwmIcons.ring(ctx, (x + 5), (y + 5), 6, c);
+    ctx.fill((x + 6), y, (x + 10), (y + 3), c);
+    ctx.fill((x + 6), (y + 13), (x + 10), (y + 16), c);
+    ctx.fill(x, (y + 6), (x + 3), (y + 10), c);
+    ctx.fill((x + 13), (y + 6), (x + 16), (y + 10), c);
+    ctx.fill((x + 2), (y + 2), (x + 5), (y + 5), c);
+    ctx.fill((x + 11), (y + 2), (x + 14), (y + 5), c);
+    ctx.fill((x + 2), (y + 11), (x + 5), (y + 14), c);
+    ctx.fill((x + 11), (y + 11), (x + 14), (y + 14), c);
+    return;
+}
+
+private static void chart(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ctx.fill((x + 1), (y + 1), (x + 2), (y + 15), c);
+    ctx.fill((x + 1), (y + 14), (x + 15), (y + 15), c);
+    ctx.fill((x + 3), (y + 9), (x + 6), (y + 14), c);
+    ctx.fill((x + 7), (y + 6), (x + 10), (y + 14), c);
+    ctx.fill((x + 11), (y + 2), (x + 14), (y + 14), c);
+    return;
+}
+
+private static void grid(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ui.FwmIcons.box(ctx, (x + 1), (y + 1), 6, 6, c);
+    ui.FwmIcons.box(ctx, (x + 9), (y + 1), 6, 6, c);
+    ui.FwmIcons.box(ctx, (x + 1), (y + 9), 6, 6, c);
+    ui.FwmIcons.box(ctx, (x + 9), (y + 9), 6, 6, c);
+    return;
+}
+
+private static void map(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ui.FwmIcons.box(ctx, (x + 1), (y + 3), 14, 11, c);
+    ctx.fill((x + 6), (y + 3), (x + 7), (y + 14), c);
+    ctx.fill((x + 10), (y + 3), (x + 11), (y + 14), c);
+    ctx.fill((x + 2), (y + 7), (x + 5), (y + 8), c);
+    ctx.fill((x + 3), (y + 6), (x + 4), (y + 9), c);
+    return;
+}
+
+private static void dot(client.gui.GuiGraphicsExtractor ctx, int x, int y, int c) {
+    ui.FwmIcons.box(ctx, (x + 4), (y + 4), 8, 8, c);
+    return;
+}
+
+private static void box(client.gui.GuiGraphicsExtractor ctx, int x, int y, int w, int h, int c) {
+    ctx.fill(x, y, (x + w), (y + 1), c);
+    ctx.fill(x, ((y + h) - 1), (x + w), (y + h), c);
+    ctx.fill(x, y, (x + 1), (y + h), c);
+    ctx.fill(((x + w) - 1), y, (x + w), (y + h), c);
+    return;
+}
+
+private static void ring(client.gui.GuiGraphicsExtractor ctx, int x, int y, int d, int c) {
+    ctx.fill((x + 1), y, ((x + d) - 1), (y + 1), c);
+    ctx.fill((x + 1), ((y + d) - 1), ((x + d) - 1), (y + d), c);
+    ctx.fill(x, (y + 1), (x + 1), ((y + d) - 1), c);
+    ctx.fill(((x + d) - 1), (y + 1), (x + d), ((y + d) - 1), c);
+    return;
+}
+
+static Map <clinit>() {
+    new String[13][0] = "fwm.tab.overview";
+    new String[13][1] = "fwm.tab.sellmacro";
+    new String[13][2] = "fwm.tab.messages";
+    new String[13][3] = "fwm.tab.toolguard";
+    new String[13][4] = "fwm.tab.secondchat";
+    new String[13][5] = "fwm.tab.colorcodes";
+    new String[13][6] = "fwm.tab.extras";
+    new String[13][7] = "fwm.tab.antileak";
+    new String[13][8] = "fwm.tab.rtp";
+    new String[13][9] = "fwm.tab.spawner";
+    new String[13][10] = "fwm.tab.members";
+    new String[13][11] = "fwm.tab.settings";
+    new String[13][12] = "fwm.tab.market";
+    ui.FwmIcons.KEYS = new String[13];
+    new int[76][0] = 8;
+    new int[76][1] = 0;
+    new int[76][2] = 16;
+    new int[76][3] = 2;
+    new int[76][4] = 8;
+    new int[76][5] = 6;
+    new int[76][6] = 16;
+    new int[76][7] = 8;
+    new int[76][8] = 8;
+    new int[76][9] = 10;
+    new int[76][10] = 16;
+    new int[76][11] = 12;
+    new int[76][12] = 8;
+    new int[76][13] = 14;
+    new int[76][14] = 16;
+    new int[76][15] = 16;
+    new int[76][16] = 8;
+    new int[76][17] = 22;
+    new int[76][18] = 16;
+    new int[76][19] = 24;
+    new int[76][20] = 4;
+    new int[76][21] = 2;
+    new int[76][22] = 8;
+    new int[76][23] = 4;
+    new int[76][24] = 4;
+    new int[76][25] = 20;
+    new int[76][26] = 8;
+    new int[76][27] = 22;
+    new int[76][28] = 16;
+    new int[76][29] = 2;
+    new int[76][30] = 20;
+    new int[76][31] = 4;
+    new int[76][32] = 16;
+    new int[76][33] = 20;
+    new int[76][34] = 20;
+    new int[76][35] = 22;
+    new int[76][36] = 2;
+    new int[76][37] = 4;
+    new int[76][38] = 4;
+    new int[76][39] = 8;
+    new int[76][40] = 2;
+    new int[76][41] = 16;
+    new int[76][42] = 4;
+    new int[76][43] = 20;
+    new int[76][44] = 12;
+    new int[76][45] = 4;
+    new int[76][46] = 14;
+    new int[76][47] = 6;
+    new int[76][48] = 12;
+    new int[76][49] = 16;
+    new int[76][50] = 14;
+    new int[76][51] = 18;
+    new int[76][52] = 20;
+    new int[76][53] = 4;
+    new int[76][54] = 22;
+    new int[76][55] = 8;
+    new int[76][56] = 20;
+    new int[76][57] = 16;
+    new int[76][58] = 22;
+    new int[76][59] = 20;
+    new int[76][60] = 0;
+    new int[76][61] = 8;
+    new int[76][62] = 2;
+    new int[76][63] = 16;
+    new int[76][64] = 8;
+    new int[76][65] = 8;
+    new int[76][66] = 10;
+    new int[76][67] = 10;
+    new int[76][68] = 22;
+    new int[76][69] = 8;
+    new int[76][70] = 24;
+    new int[76][71] = 16;
+    new int[76][72] = 14;
+    new int[76][73] = 12;
+    new int[76][74] = 16;
+    new int[76][75] = 14;
+    new Map$Entry[10][0] = Map.entry("fwm.tab.sellmacro", new int[76]);
+    new int[40][0] = 2;
+    new int[40][1] = 2;
+    new int[40][2] = 4;
+    new int[40][3] = 20;
+    new int[40][4] = 20;
+    new int[40][5] = 6;
+    new int[40][6] = 22;
+    new int[40][7] = 8;
+    new int[40][8] = 10;
+    new int[40][9] = 8;
+    new int[40][10] = 12;
+    new int[40][11] = 10;
+    new int[40][12] = 18;
+    new int[40][13] = 8;
+    new int[40][14] = 20;
+    new int[40][15] = 10;
+    new int[40][16] = 8;
+    new int[40][17] = 10;
+    new int[40][18] = 10;
+    new int[40][19] = 12;
+    new int[40][20] = 12;
+    new int[40][21] = 10;
+    new int[40][22] = 14;
+    new int[40][23] = 12;
+    new int[40][24] = 16;
+    new int[40][25] = 10;
+    new int[40][26] = 18;
+    new int[40][27] = 12;
+    new int[40][28] = 6;
+    new int[40][29] = 12;
+    new int[40][30] = 8;
+    new int[40][31] = 14;
+    new int[40][32] = 14;
+    new int[40][33] = 12;
+    new int[40][34] = 16;
+    new int[40][35] = 14;
+    new int[40][36] = 4;
+    new int[40][37] = 20;
+    new int[40][38] = 22;
+    new int[40][39] = 22;
+    new Map$Entry[10][1] = Map.entry("fwm.tab.market", new int[40]);
+    new int[44][0] = 0;
+    new int[44][1] = 4;
+    new int[44][2] = 24;
+    new int[44][3] = 6;
+    new int[44][4] = 0;
+    new int[44][5] = 18;
+    new int[44][6] = 24;
+    new int[44][7] = 20;
+    new int[44][8] = 0;
+    new int[44][9] = 6;
+    new int[44][10] = 4;
+    new int[44][11] = 8;
+    new int[44][12] = 20;
+    new int[44][13] = 6;
+    new int[44][14] = 24;
+    new int[44][15] = 8;
+    new int[44][16] = 0;
+    new int[44][17] = 8;
+    new int[44][18] = 2;
+    new int[44][19] = 18;
+    new int[44][20] = 4;
+    new int[44][21] = 8;
+    new int[44][22] = 6;
+    new int[44][23] = 10;
+    new int[44][24] = 18;
+    new int[44][25] = 8;
+    new int[44][26] = 20;
+    new int[44][27] = 10;
+    new int[44][28] = 22;
+    new int[44][29] = 8;
+    new int[44][30] = 24;
+    new int[44][31] = 18;
+    new int[44][32] = 6;
+    new int[44][33] = 10;
+    new int[44][34] = 8;
+    new int[44][35] = 12;
+    new int[44][36] = 16;
+    new int[44][37] = 10;
+    new int[44][38] = 18;
+    new int[44][39] = 12;
+    new int[44][40] = 8;
+    new int[44][41] = 12;
+    new int[44][42] = 16;
+    new int[44][43] = 14;
+    new Map$Entry[10][2] = Map.entry("fwm.tab.messages", new int[44]);
+    new int[32][0] = 4;
+    new int[32][1] = 2;
+    new int[32][2] = 20;
+    new int[32][3] = 4;
+    new int[32][4] = 2;
+    new int[32][5] = 4;
+    new int[32][6] = 4;
+    new int[32][7] = 18;
+    new int[32][8] = 2;
+    new int[32][9] = 20;
+    new int[32][10] = 4;
+    new int[32][11] = 22;
+    new int[32][12] = 20;
+    new int[32][13] = 4;
+    new int[32][14] = 22;
+    new int[32][15] = 16;
+    new int[32][16] = 6;
+    new int[32][17] = 8;
+    new int[32][18] = 14;
+    new int[32][19] = 10;
+    new int[32][20] = 6;
+    new int[32][21] = 12;
+    new int[32][22] = 10;
+    new int[32][23] = 14;
+    new int[32][24] = 6;
+    new int[32][25] = 16;
+    new int[32][26] = 20;
+    new int[32][27] = 18;
+    new int[32][28] = 2;
+    new int[32][29] = 18;
+    new int[32][30] = 6;
+    new int[32][31] = 20;
+    new Map$Entry[10][3] = Map.entry("fwm.tab.secondchat", new int[32]);
+    new int[64][0] = 6;
+    new int[64][1] = 0;
+    new int[64][2] = 16;
+    new int[64][3] = 2;
+    new int[64][4] = 6;
+    new int[64][5] = 22;
+    new int[64][6] = 16;
+    new int[64][7] = 24;
+    new int[64][8] = 2;
+    new int[64][9] = 2;
+    new int[64][10] = 6;
+    new int[64][11] = 4;
+    new int[64][12] = 16;
+    new int[64][13] = 2;
+    new int[64][14] = 20;
+    new int[64][15] = 4;
+    new int[64][16] = 0;
+    new int[64][17] = 4;
+    new int[64][18] = 2;
+    new int[64][19] = 18;
+    new int[64][20] = 6;
+    new int[64][21] = 4;
+    new int[64][22] = 10;
+    new int[64][23] = 6;
+    new int[64][24] = 12;
+    new int[64][25] = 4;
+    new int[64][26] = 16;
+    new int[64][27] = 6;
+    new int[64][28] = 20;
+    new int[64][29] = 4;
+    new int[64][30] = 22;
+    new int[64][31] = 10;
+    new int[64][32] = 4;
+    new int[64][33] = 8;
+    new int[64][34] = 8;
+    new int[64][35] = 10;
+    new int[64][36] = 14;
+    new int[64][37] = 10;
+    new int[64][38] = 20;
+    new int[64][39] = 12;
+    new int[64][40] = 14;
+    new int[64][41] = 16;
+    new int[64][42] = 20;
+    new int[64][43] = 18;
+    new int[64][44] = 12;
+    new int[64][45] = 12;
+    new int[64][46] = 14;
+    new int[64][47] = 16;
+    new int[64][48] = 2;
+    new int[64][49] = 18;
+    new int[64][50] = 4;
+    new int[64][51] = 20;
+    new int[64][52] = 18;
+    new int[64][53] = 18;
+    new int[64][54] = 20;
+    new int[64][55] = 20;
+    new int[64][56] = 4;
+    new int[64][57] = 20;
+    new int[64][58] = 6;
+    new int[64][59] = 22;
+    new int[64][60] = 16;
+    new int[64][61] = 20;
+    new int[64][62] = 18;
+    new int[64][63] = 22;
+    new Map$Entry[10][4] = Map.entry("fwm.tab.colorcodes", new int[64]);
+    new int[60][0] = 5;
+    new int[60][1] = 2;
+    new int[60][2] = 11;
+    new int[60][3] = 4;
+    new int[60][4] = 5;
+    new int[60][5] = 10;
+    new int[60][6] = 11;
+    new int[60][7] = 12;
+    new int[60][8] = 15;
+    new int[60][9] = 2;
+    new int[60][10] = 19;
+    new int[60][11] = 4;
+    new int[60][12] = 15;
+    new int[60][13] = 10;
+    new int[60][14] = 19;
+    new int[60][15] = 12;
+    new int[60][16] = 3;
+    new int[60][17] = 4;
+    new int[60][18] = 5;
+    new int[60][19] = 10;
+    new int[60][20] = 11;
+    new int[60][21] = 4;
+    new int[60][22] = 13;
+    new int[60][23] = 10;
+    new int[60][24] = 19;
+    new int[60][25] = 4;
+    new int[60][26] = 21;
+    new int[60][27] = 10;
+    new int[60][28] = 4;
+    new int[60][29] = 14;
+    new int[60][30] = 12;
+    new int[60][31] = 16;
+    new int[60][32] = 16;
+    new int[60][33] = 14;
+    new int[60][34] = 20;
+    new int[60][35] = 16;
+    new int[60][36] = 2;
+    new int[60][37] = 16;
+    new int[60][38] = 4;
+    new int[60][39] = 18;
+    new int[60][40] = 12;
+    new int[60][41] = 16;
+    new int[60][42] = 14;
+    new int[60][43] = 18;
+    new int[60][44] = 20;
+    new int[60][45] = 16;
+    new int[60][46] = 22;
+    new int[60][47] = 18;
+    new int[60][48] = 0;
+    new int[60][49] = 18;
+    new int[60][50] = 2;
+    new int[60][51] = 22;
+    new int[60][52] = 14;
+    new int[60][53] = 18;
+    new int[60][54] = 16;
+    new int[60][55] = 22;
+    new int[60][56] = 22;
+    new int[60][57] = 18;
+    new int[60][58] = 24;
+    new int[60][59] = 22;
+    new Map$Entry[10][5] = Map.entry("fwm.tab.members", new int[60]);
+    new int[56][0] = 4;
+    new int[56][1] = 0;
+    new int[56][2] = 16;
+    new int[56][3] = 2;
+    new int[56][4] = 2;
+    new int[56][5] = 2;
+    new int[56][6] = 4;
+    new int[56][7] = 4;
+    new int[56][8] = 2;
+    new int[56][9] = 16;
+    new int[56][10] = 4;
+    new int[56][11] = 18;
+    new int[56][12] = 16;
+    new int[56][13] = 2;
+    new int[56][14] = 18;
+    new int[56][15] = 4;
+    new int[56][16] = 0;
+    new int[56][17] = 4;
+    new int[56][18] = 2;
+    new int[56][19] = 8;
+    new int[56][20] = 0;
+    new int[56][21] = 18;
+    new int[56][22] = 2;
+    new int[56][23] = 20;
+    new int[56][24] = 12;
+    new int[56][25] = 4;
+    new int[56][26] = 14;
+    new int[56][27] = 6;
+    new int[56][28] = 18;
+    new int[56][29] = 4;
+    new int[56][30] = 20;
+    new int[56][31] = 6;
+    new int[56][32] = 10;
+    new int[56][33] = 6;
+    new int[56][34] = 12;
+    new int[56][35] = 10;
+    new int[56][36] = 20;
+    new int[56][37] = 6;
+    new int[56][38] = 22;
+    new int[56][39] = 8;
+    new int[56][40] = 22;
+    new int[56][41] = 8;
+    new int[56][42] = 24;
+    new int[56][43] = 12;
+    new int[56][44] = 8;
+    new int[56][45] = 10;
+    new int[56][46] = 10;
+    new int[56][47] = 12;
+    new int[56][48] = 6;
+    new int[56][49] = 12;
+    new int[56][50] = 8;
+    new int[56][51] = 14;
+    new int[56][52] = 4;
+    new int[56][53] = 14;
+    new int[56][54] = 6;
+    new int[56][55] = 16;
+    new Map$Entry[10][6] = Map.entry("fwm.tab.toolguard", new int[56]);
+    new int[88][0] = 2;
+    new int[88][1] = 2;
+    new int[88][2] = 4;
+    new int[88][3] = 4;
+    new int[88][4] = 2;
+    new int[88][5] = 8;
+    new int[88][6] = 4;
+    new int[88][7] = 10;
+    new int[88][8] = 2;
+    new int[88][9] = 14;
+    new int[88][10] = 4;
+    new int[88][11] = 16;
+    new int[88][12] = 4;
+    new int[88][13] = 4;
+    new int[88][14] = 6;
+    new int[88][15] = 6;
+    new int[88][16] = 10;
+    new int[88][17] = 4;
+    new int[88][18] = 16;
+    new int[88][19] = 6;
+    new int[88][20] = 10;
+    new int[88][21] = 14;
+    new int[88][22] = 16;
+    new int[88][23] = 16;
+    new int[88][24] = 4;
+    new int[88][25] = 6;
+    new int[88][26] = 8;
+    new int[88][27] = 8;
+    new int[88][28] = 4;
+    new int[88][29] = 16;
+    new int[88][30] = 8;
+    new int[88][31] = 18;
+    new int[88][32] = 16;
+    new int[88][33] = 6;
+    new int[88][34] = 20;
+    new int[88][35] = 8;
+    new int[88][36] = 8;
+    new int[88][37] = 8;
+    new int[88][38] = 10;
+    new int[88][39] = 10;
+    new int[88][40] = 12;
+    new int[88][41] = 8;
+    new int[88][42] = 14;
+    new int[88][43] = 10;
+    new int[88][44] = 20;
+    new int[88][45] = 8;
+    new int[88][46] = 22;
+    new int[88][47] = 10;
+    new int[88][48] = 20;
+    new int[88][49] = 14;
+    new int[88][50] = 22;
+    new int[88][51] = 16;
+    new int[88][52] = 20;
+    new int[88][53] = 20;
+    new int[88][54] = 22;
+    new int[88][55] = 22;
+    new int[88][56] = 0;
+    new int[88][57] = 10;
+    new int[88][58] = 2;
+    new int[88][59] = 14;
+    new int[88][60] = 8;
+    new int[88][61] = 10;
+    new int[88][62] = 12;
+    new int[88][63] = 12;
+    new int[88][64] = 14;
+    new int[88][65] = 10;
+    new int[88][66] = 16;
+    new int[88][67] = 12;
+    new int[88][68] = 22;
+    new int[88][69] = 10;
+    new int[88][70] = 24;
+    new int[88][71] = 14;
+    new int[88][72] = 8;
+    new int[88][73] = 12;
+    new int[88][74] = 14;
+    new int[88][75] = 14;
+    new int[88][76] = 16;
+    new int[88][77] = 16;
+    new int[88][78] = 18;
+    new int[88][79] = 18;
+    new int[88][80] = 8;
+    new int[88][81] = 18;
+    new int[88][82] = 16;
+    new int[88][83] = 20;
+    new int[88][84] = 18;
+    new int[88][85] = 18;
+    new int[88][86] = 20;
+    new int[88][87] = 20;
+    new Map$Entry[10][7] = Map.entry("fwm.tab.antileak", new int[88]);
+    new int[76][0] = 12;
+    new int[76][1] = 0;
+    new int[76][2] = 24;
+    new int[76][3] = 2;
+    new int[76][4] = 10;
+    new int[76][5] = 2;
+    new int[76][6] = 12;
+    new int[76][7] = 4;
+    new int[76][8] = 10;
+    new int[76][9] = 22;
+    new int[76][10] = 12;
+    new int[76][11] = 24;
+    new int[76][12] = 22;
+    new int[76][13] = 2;
+    new int[76][14] = 24;
+    new int[76][15] = 12;
+    new int[76][16] = 8;
+    new int[76][17] = 4;
+    new int[76][18] = 10;
+    new int[76][19] = 6;
+    new int[76][20] = 8;
+    new int[76][21] = 20;
+    new int[76][22] = 10;
+    new int[76][23] = 22;
+    new int[76][24] = 6;
+    new int[76][25] = 6;
+    new int[76][26] = 8;
+    new int[76][27] = 8;
+    new int[76][28] = 6;
+    new int[76][29] = 18;
+    new int[76][30] = 8;
+    new int[76][31] = 20;
+    new int[76][32] = 16;
+    new int[76][33] = 6;
+    new int[76][34] = 20;
+    new int[76][35] = 10;
+    new int[76][36] = 4;
+    new int[76][37] = 8;
+    new int[76][38] = 6;
+    new int[76][39] = 10;
+    new int[76][40] = 4;
+    new int[76][41] = 16;
+    new int[76][42] = 6;
+    new int[76][43] = 18;
+    new int[76][44] = 2;
+    new int[76][45] = 10;
+    new int[76][46] = 4;
+    new int[76][47] = 12;
+    new int[76][48] = 2;
+    new int[76][49] = 14;
+    new int[76][50] = 4;
+    new int[76][51] = 16;
+    new int[76][52] = 0;
+    new int[76][53] = 12;
+    new int[76][54] = 2;
+    new int[76][55] = 14;
+    new int[76][56] = 20;
+    new int[76][57] = 12;
+    new int[76][58] = 22;
+    new int[76][59] = 14;
+    new int[76][60] = 18;
+    new int[76][61] = 14;
+    new int[76][62] = 20;
+    new int[76][63] = 16;
+    new int[76][64] = 16;
+    new int[76][65] = 16;
+    new int[76][66] = 18;
+    new int[76][67] = 18;
+    new int[76][68] = 14;
+    new int[76][69] = 18;
+    new int[76][70] = 16;
+    new int[76][71] = 20;
+    new int[76][72] = 12;
+    new int[76][73] = 20;
+    new int[76][74] = 14;
+    new int[76][75] = 22;
+    new Map$Entry[10][8] = Map.entry("fwm.tab.auction", new int[76]);
+    new int[56][0] = 8;
+    new int[56][1] = 2;
+    new int[56][2] = 11;
+    new int[56][3] = 4;
+    new int[56][4] = 13;
+    new int[56][5] = 2;
+    new int[56][6] = 16;
+    new int[56][7] = 4;
+    new int[56][8] = 6;
+    new int[56][9] = 4;
+    new int[56][10] = 8;
+    new int[56][11] = 6;
+    new int[56][12] = 11;
+    new int[56][13] = 4;
+    new int[56][14] = 13;
+    new int[56][15] = 6;
+    new int[56][16] = 11;
+    new int[56][17] = 8;
+    new int[56][18] = 13;
+    new int[56][19] = 12;
+    new int[56][20] = 11;
+    new int[56][21] = 14;
+    new int[56][22] = 13;
+    new int[56][23] = 20;
+    new int[56][24] = 16;
+    new int[56][25] = 4;
+    new int[56][26] = 18;
+    new int[56][27] = 6;
+    new int[56][28] = 4;
+    new int[56][29] = 6;
+    new int[56][30] = 20;
+    new int[56][31] = 8;
+    new int[56][32] = 4;
+    new int[56][33] = 12;
+    new int[56][34] = 20;
+    new int[56][35] = 14;
+    new int[56][36] = 2;
+    new int[56][37] = 8;
+    new int[56][38] = 4;
+    new int[56][39] = 12;
+    new int[56][40] = 20;
+    new int[56][41] = 8;
+    new int[56][42] = 22;
+    new int[56][43] = 12;
+    new int[56][44] = 4;
+    new int[56][45] = 14;
+    new int[56][46] = 6;
+    new int[56][47] = 20;
+    new int[56][48] = 18;
+    new int[56][49] = 14;
+    new int[56][50] = 20;
+    new int[56][51] = 20;
+    new int[56][52] = 6;
+    new int[56][53] = 20;
+    new int[56][54] = 18;
+    new int[56][55] = 22;
+    new Map$Entry[10][9] = Map.entry("fwm.tab.giveaway", new int[56]);
+    ui.FwmIcons.PIXEL = Map.ofEntries(new Map$Entry[10]);
+    new int[124][0] = 21;
+    new int[124][1] = 6;
+    new int[124][2] = 27;
+    new int[124][3] = 8;
+    new int[124][4] = 21;
+    new int[124][5] = 17;
+    new int[124][6] = 27;
+    new int[124][7] = 19;
+    new int[124][8] = 21;
+    new int[124][9] = 29;
+    new int[124][10] = 27;
+    new int[124][11] = 31;
+    new int[124][12] = 19;
+    new int[124][13] = 8;
+    new int[124][14] = 29;
+    new int[124][15] = 10;
+    new int[124][16] = 19;
+    new int[124][17] = 15;
+    new int[124][18] = 29;
+    new int[124][19] = 17;
+    new int[124][20] = 17;
+    new int[124][21] = 10;
+    new int[124][22] = 23;
+    new int[124][23] = 12;
+    new int[124][24] = 27;
+    new int[124][25] = 10;
+    new int[124][26] = 31;
+    new int[124][27] = 14;
+    new int[124][28] = 17;
+    new int[124][29] = 12;
+    new int[124][30] = 25;
+    new int[124][31] = 14;
+    new int[124][32] = 17;
+    new int[124][33] = 14;
+    new int[124][34] = 31;
+    new int[124][35] = 15;
+    new int[124][36] = 23;
+    new int[124][37] = 19;
+    new int[124][38] = 25;
+    new int[124][39] = 25;
+    new int[124][40] = 23;
+    new int[124][41] = 27;
+    new int[124][42] = 25;
+    new int[124][43] = 29;
+    new int[124][44] = 23;
+    new int[124][45] = 31;
+    new int[124][46] = 25;
+    new int[124][47] = 34;
+    new int[124][48] = 14;
+    new int[124][49] = 25;
+    new int[124][50] = 34;
+    new int[124][51] = 27;
+    new int[124][52] = 12;
+    new int[124][53] = 27;
+    new int[124][54] = 14;
+    new int[124][55] = 31;
+    new int[124][56] = 27;
+    new int[124][57] = 27;
+    new int[124][58] = 29;
+    new int[124][59] = 29;
+    new int[124][60] = 34;
+    new int[124][61] = 27;
+    new int[124][62] = 36;
+    new int[124][63] = 29;
+    new int[124][64] = 33;
+    new int[124][65] = 29;
+    new int[124][66] = 36;
+    new int[124][67] = 31;
+    new int[124][68] = 10;
+    new int[124][69] = 31;
+    new int[124][70] = 12;
+    new int[124][71] = 34;
+    new int[124][72] = 19;
+    new int[124][73] = 31;
+    new int[124][74] = 21;
+    new int[124][75] = 33;
+    new int[124][76] = 31;
+    new int[124][77] = 31;
+    new int[124][78] = 33;
+    new int[124][79] = 33;
+    new int[124][80] = 36;
+    new int[124][81] = 31;
+    new int[124][82] = 38;
+    new int[124][83] = 34;
+    new int[124][84] = 17;
+    new int[124][85] = 33;
+    new int[124][86] = 19;
+    new int[124][87] = 34;
+    new int[124][88] = 29;
+    new int[124][89] = 33;
+    new int[124][90] = 31;
+    new int[124][91] = 40;
+    new int[124][92] = 8;
+    new int[124][93] = 34;
+    new int[124][94] = 10;
+    new int[124][95] = 38;
+    new int[124][96] = 12;
+    new int[124][97] = 34;
+    new int[124][98] = 17;
+    new int[124][99] = 36;
+    new int[124][100] = 38;
+    new int[124][101] = 34;
+    new int[124][102] = 40;
+    new int[124][103] = 38;
+    new int[124][104] = 17;
+    new int[124][105] = 36;
+    new int[124][106] = 21;
+    new int[124][107] = 38;
+    new int[124][108] = 6;
+    new int[124][109] = 38;
+    new int[124][110] = 8;
+    new int[124][111] = 40;
+    new int[124][112] = 21;
+    new int[124][113] = 38;
+    new int[124][114] = 23;
+    new int[124][115] = 40;
+    new int[124][116] = 40;
+    new int[124][117] = 38;
+    new int[124][118] = 42;
+    new int[124][119] = 40;
+    new int[124][120] = 4;
+    new int[124][121] = 40;
+    new int[124][122] = 44;
+    new int[124][123] = 42;
+    ui.FwmIcons.FINE = Map.of("fwm.tab.rtp", new int[124]);
+    return;
+}
+

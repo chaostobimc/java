@@ -1,0 +1,4 @@
+# entpacktes Jar / Zwischenstände der Analyse
+x/
+*.json.tmp
+__pycache__/

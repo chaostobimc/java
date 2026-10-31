@@ -1,0 +1,178 @@
+// net/friendswithmoney/fwm/antileak/AntiLeakPack vClassVersion(major=69, minor=0)
+field ORES Ljava/util/Map;
+field STONES Ljava/util/List;
+field COLORMAPS Ljava/util/Map;
+field GSON Lcom/google/gson/Gson;
+field vanilla Lcom/google/gson/JsonObject;
+
+=== write(Ljava/nio/file/Path;Lnet/friendswithmoney/fwm/antileak/AntiLeakPack$Settings;)V
+      0 aload_0          
+      1 invokestatic     antileak.AntiLeakPack.delete(Ljava/nio/file/Path;)V
+      4 aload_0          
+      5 iconst_0         
+      6 anewarray        31
+      9 invokestatic     Files.createDirectories(Ljava/nio/file/Path;[Ljava/nio/file/attribute/FileAttribute;)Ljava/nio/file/Path;
+     12 pop              
+     13 aload_0          
+     14 ldc              'pack.mcmeta'
+     16 invokeinterface  Path.resolve(Ljava/lang/String;)Ljava/nio/file/Path; 2 0
+     21 invokestatic     antileak.AntiLeakPack.mcmeta()Ljava/lang/String;
+     24 invokestatic     antileak.AntiLeakPack.writeText(Ljava/nio/file/Path;Ljava/lang/String;)V
+     27 aload_0          
+     28 ldc              'pack.png'
+     30 invokeinterface  Path.resolve(Ljava/lang/String;)Ljava/nio/file/Path; 2 0
+     35 invokestatic     antileak.AntiLeakPack.writeLogo(Ljava/nio/file/Path;)V
+     38 aload_0          
+     39 ldc              'assets/minecraft/blockstates'
+     41 invokeinterface  Path.resolve(Ljava/lang/String;)Ljava/nio/file/Path; 2 0
+     46 astore_2         
+     47 aload_2          
+     48 iconst_0         
+     49 anewarray        31
+     52 invokestatic     Files.createDirectories(Ljava/nio/file/Path;[Ljava/nio/file/attribute/FileAttribute;)Ljava/nio/file/Path;
+     55 pop              
+     56 aload_1          
+     57 invokestatic     antileak.AntiLeakPack.blockstates(Lnet/friendswithmoney/fwm/antileak/AntiLeakPack$Settings;)Ljava/util/Map;
+     60 invokeinterface  Map.entrySet()Ljava/util/Set; 1 0
+     65 invokeinterface  Set.iterator()Ljava/util/Iterator; 1 0
+     70 astore_3         
+     71 aload_3          
+     72 invokeinterface  Iterator.hasNext()Z 1 0
+     77 ifeq             134
+     80 aload_3          
+     81 invokeinterface  Iterator.next()Ljava/lang/Object; 1 0
+     86 checkcast        java/util/Map$Entry
+     89 astore           v4
+     91 aload_2          
+     92 aload            v4
+     94 invokeinterface  Map$Entry.getKey()Ljava/lang/Object; 1 0
+     99 checkcast        java/lang/String
+    102 invokedynamic    indy makeConcatWithConstants(Ljava/lang/String;)Ljava/lang/String; 0 0
+    107 invokeinterface  Path.resolve(Ljava/lang/String;)Ljava/nio/file/Path; 2 0
+    112 getstatic        antileak.AntiLeakPack.GSON : Lcom/google/gson/Gson;
+    115 aload            v4
+    117 invokeinterface  Map$Entry.getValue()Ljava/lang/Object; 1 0
+    122 checkcast        com/google/gson/JsonElement
+    125 invokevirtual    Gson.toJson(Lcom/google/gson/JsonElement;)Ljava/lang/String;
+    128 invokestatic     antileak.AntiLeakPack.writeText(Ljava/nio/file/Path;Ljava/lang/String;)V
+    131 goto             71
+    134 aload_1          
+    135 invokevirtual    antileak.AntiLeakPack$Settings.bedrock()Z
+    138 ifeq             191
+    141 aload_0          
+    142 ldc              'assets/minecraft/models/block'
+    144 invokeinterface  Path.resolve(Ljava/lang/String;)Ljava/nio/file/Path; 2 0
+    149 astore_3         
+    150 aload_3          
+    151 iconst_0         
+    152 anewarray        31
+    155 invokestatic     Files.createDirectories(Ljava/nio/file/Path;[Ljava/nio/file/attribute/FileAttribute;)Ljava/nio/file/Path;
+    158 pop              
+    159 aload_3          
+    160 ldc              'bedrock.json'
+    162 invokeinterface  Path.resolve(Ljava/lang/String;)Ljava/nio/file/Path; 2 0
+    167 ldc              'cube_column'
+    169 invokestatic     antileak.AntiLeakPack.deepslateModel(Ljava/lang/String;)Ljava/lang/String;
+    172 invokestatic     antileak.AntiLeakPack.writeText(Ljava/nio/file/Path;Ljava/lang/String;)V
+    175 aload_3          
+    176 ldc              'bedrock_mirrored.json'
+    178 invokeinterface  Path.resolve(Ljava/lang/String;)Ljava/nio/file/Path; 2 0
+    183 ldc              'cube_column_mirrored'
+    185 invokestatic     antileak.AntiLeakPack.deepslateModel(Ljava/lang/String;)Ljava/lang/String;
+    188 invokestatic     antileak.AntiLeakPack.writeText(Ljava/nio/file/Path;Ljava/lang/String;)V
+    191 aload_1          
+    192 invokevirtual    antileak.AntiLeakPack$Settings.biome()Z
+    195 ifeq             301
+    198 aload_0          
+    199 ldc              'assets/minecraft/textures/colormap'
+    201 invokeinterface  Path.resolve(Ljava/lang/String;)Ljava/nio/file/Path; 2 0
+    206 astore_3         
+    207 aload_3          
+    208 iconst_0         
+    209 anewarray        31
+    212 invokestatic     Files.createDirectories(Ljava/nio/file/Path;[Ljava/nio/file/attribute/FileAttribute;)Ljava/nio/file/Path;
+    215 pop              
+    216 invokestatic     antileak.AntiLeakPack.data()Lcom/google/gson/JsonObject;
+    219 ldc              'colormaps'
+    221 invokevirtual    JsonObject.getAsJsonArray(Ljava/lang/String;)Lcom/google/gson/JsonArray;
+    224 invokevirtual    JsonArray.iterator()Ljava/util/Iterator;
+    227 astore           v4
+    229 aload            v4
+    231 invokeinterface  Iterator.hasNext()Z 1 0
+    236 ifeq             301
+    239 aload            v4
+    241 invokeinterface  Iterator.next()Ljava/lang/Object; 1 0
+    246 checkcast        com/google/gson/JsonElement
+    249 astore           v5
+    251 getstatic        antileak.AntiLeakPack.COLORMAPS : Ljava/util/Map;
+    254 aload            v5
+    256 invokevirtual    JsonElement.getAsString()Ljava/lang/String;
+    259 invokeinterface  Map.get(Ljava/lang/Object;)Ljava/lang/Object; 2 0
+    264 checkcast        java/lang/Integer
+    267 astore           v6
+    269 aload            v6
+    271 ifnull           298
+    274 aload_3          
+    275 aload            v5
+    277 invokevirtual    JsonElement.getAsString()Ljava/lang/String;
+    280 invokedynamic    indy makeConcatWithConstants(Ljava/lang/String;)Ljava/lang/String; 0 0
+    285 invokeinterface  Path.resolve(Ljava/lang/String;)Ljava/nio/file/Path; 2 0
+    290 aload            v6
+    292 invokevirtual    Integer.intValue()I
+    295 invokestatic     antileak.AntiLeakPack.writeFlat(Ljava/nio/file/Path;I)V
+    298 goto             229
+    301 return           
+
+=== delete(Ljava/nio/file/Path;)V
+  [try 21..78 handler 91 type 205]
+  [try 96..102 handler 105 type 205]
+      0 aload_0          
+      1 iconst_0         
+      2 anewarray        164
+      5 invokestatic     Files.exists(Ljava/nio/file/Path;[Ljava/nio/file/LinkOption;)Z
+      8 ifne             12
+     11 return           
+     12 aload_0          
+     13 iconst_0         
+     14 anewarray        170
+     17 invokestatic     Files.walk(Ljava/nio/file/Path;[Ljava/nio/file/FileVisitOption;)Ljava/util/stream/Stream;
+     20 astore_1         
+     21 aload_1          
+     22 invokestatic     Comparator.reverseOrder()Ljava/util/Comparator;
+     25 invokeinterface  stream.Stream.sorted(Ljava/util/Comparator;)Ljava/util/stream/Stream; 2 0
+     30 invokeinterface  stream.Stream.toList()Ljava/util/List; 1 0
+     35 invokeinterface  List.iterator()Ljava/util/Iterator; 1 0
+     40 astore_2         
+     41 aload_2          
+     42 invokeinterface  Iterator.hasNext()Z 1 0
+     47 ifeq             78
+     50 aload_2          
+     51 invokeinterface  Iterator.next()Ljava/lang/Object; 1 0
+     56 checkcast        java/nio/file/Path
+     59 astore_3         
+     60 aload_3          
+     61 aload_0          
+     62 invokeinterface  Path.startsWith(Ljava/nio/file/Path;)Z 2 0
+     67 ifeq             75
+     70 aload_3          
+     71 invokestatic     Files.deleteIfExists(Ljava/nio/file/Path;)Z
+     74 pop              
+     75 goto             41
+     78 aload_1          
+     79 ifnull           113
+     82 aload_1          
+     83 invokeinterface  stream.Stream.close()V 1 0
+     88 goto             113
+     91 astore_2         
+     92 aload_1          
+     93 ifnull           111
+     96 aload_1          
+     97 invokeinterface  stream.Stream.close()V 1 0
+    102 goto             111
+    105 astore_3         
+    106 aload_2          
+    107 aload_3          
+    108 invokevirtual    Throwable.addSuppressed(Ljava/lang/Throwable;)V
+    111 aload_2          
+    112 athrow           
+    113 return           

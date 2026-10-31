@@ -1,0 +1,142 @@
+// net/friendswithmoney/fwm/game/AutoTpa vClassVersion(major=69, minor=0)
+field REQUEST Ljava/util/regex/Pattern;
+field ACCEPT Ljava/util/regex/Pattern;
+field pendingCommand Ljava/lang/String;
+field pendingName Ljava/lang/String;
+field pendingTicks I
+
+=== accept(Lnet/minecraft/network/chat/Component;)V
+      0 aload_0          
+      1 ifnull           12
+      4 ldc              'fwm.tab.autotpa'
+      6 invokestatic     config.Features.isOn(Ljava/lang/String;)Z
+      9 ifne             13
+     12 return           
+     13 getstatic        config.FwmConfig.INSTANCE : Lnet/friendswithmoney/fwm/config/FwmConfig;
+     16 getfield         config.FwmConfig.autoTpaNames : Ljava/util/List;
+     19 invokeinterface  List.isEmpty()Z 1 0
+     24 ifeq             28
+     27 return           
+     28 aload_0          
+     29 invokestatic     game.AutoTpa.acceptCommand(Lnet/minecraft/network/chat/Component;)Ljava/lang/String;
+     32 astore_1         
+     33 aload_0          
+     34 invokestatic     chat.ServerLine.fromServer(Lnet/minecraft/network/chat/Component;)Z
+     37 ifne             41
+     40 return           
+     41 aload_0          
+     42 invokestatic     chat.ServerLine.plain(Lnet/minecraft/network/chat/Component;)Ljava/lang/String;
+     45 astore_2         
+     46 getstatic        game.AutoTpa.REQUEST : Ljava/util/regex/Pattern;
+     49 aload_2          
+     50 invokevirtual    regex.Pattern.matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
+     53 astore_3         
+     54 aload_3          
+     55 invokevirtual    regex.Matcher.find()Z
+     58 ifne             62
+     61 return           
+     62 aload_3          
+     63 ldc              'name'
+     65 invokevirtual    regex.Matcher.group(Ljava/lang/String;)Ljava/lang/String;
+     68 astore           v4
+     70 aload_2          
+     71 getstatic        Locale.ROOT : Ljava/util/Locale;
+     74 invokevirtual    String.toLowerCase(Ljava/util/Locale;)Ljava/lang/String;
+     77 ldc              'gefragt'
+     79 invokevirtual    String.contains(Ljava/lang/CharSequence;)Z
+     82 istore           v5
+     84 iload            v5
+     86 ifeq             99
+     89 getstatic        config.FwmConfig.INSTANCE : Lnet/friendswithmoney/fwm/config/FwmConfig;
+     92 getfield         config.FwmConfig.autoTpaHere : Z
+     95 ifne             99
+     98 return           
+     99 aload            v4
+    101 invokestatic     game.AutoTpa.listed(Ljava/lang/String;)Z
+    104 ifne             108
+    107 return           
+    108 aload_1          
+    109 ifnull           122
+    112 aload_1          
+    113 invokestatic     chat.ServerLine.strip(Ljava/lang/String;)Ljava/lang/String;
+    116 invokevirtual    String.trim()Ljava/lang/String;
+    119 goto             141
+    122 aload            v4
+    124 iload            v5
+    126 ifeq             134
+    129 ldc              ' tpahere'
+    131 goto             136
+    134 ldc              ' tpa'
+    136 invokedynamic    indy makeConcatWithConstants(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; 0 0
+    141 astore           v6
+    143 aload            v6
+    145 ldc              '/'
+    147 invokevirtual    String.startsWith(Ljava/lang/String;)Z
+    150 ifeq             161
+    153 aload            v6
+    155 iconst_1         
+    156 invokevirtual    String.substring(I)Ljava/lang/String;
+    159 astore           v6
+    161 getstatic        game.AutoTpa.ACCEPT : Ljava/util/regex/Pattern;
+    164 aload            v6
+    166 invokevirtual    regex.Pattern.matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
+    169 invokevirtual    regex.Matcher.matches()Z
+    172 ifne             176
+    175 return           
+    176 aload            v6
+    178 putstatic        game.AutoTpa.pendingCommand : Ljava/lang/String;
+    181 aload            v4
+    183 putstatic        game.AutoTpa.pendingName : Ljava/lang/String;
+    186 iconst_1         
+    187 getstatic        config.FwmConfig.INSTANCE : Lnet/friendswithmoney/fwm/config/FwmConfig;
+    190 getfield         config.FwmConfig.autoTpaDelayTicks : I
+    193 invokestatic     Math.max(II)I
+    196 putstatic        game.AutoTpa.pendingTicks : I
+    199 return           
+
+=== tick(Lnet/minecraft/client/Minecraft;)V
+      0 getstatic        game.AutoTpa.pendingCommand : Ljava/lang/String;
+      3 ifnonnull        7
+      6 return           
+      7 aload_0          
+      8 getfield         client.Minecraft.player : Lnet/minecraft/client/player/LocalPlayer;
+     11 ifnull           29
+     14 aload_0          
+     15 invokevirtual    client.Minecraft.getConnection()Lnet/minecraft/client/multiplayer/ClientPacketListener;
+     18 ifnull           29
+     21 ldc              'fwm.tab.autotpa'
+     23 invokestatic     config.Features.isOn(Ljava/lang/String;)Z
+     26 ifne             34
+     29 aconst_null      
+     30 putstatic        game.AutoTpa.pendingCommand : Ljava/lang/String;
+     33 return           
+     34 getstatic        game.AutoTpa.pendingTicks : I
+     37 iconst_1         
+     38 isub             
+     39 dup              
+     40 putstatic        game.AutoTpa.pendingTicks : I
+     43 ifle             47
+     46 return           
+     47 aload_0          
+     48 invokevirtual    client.Minecraft.getConnection()Lnet/minecraft/client/multiplayer/ClientPacketListener;
+     51 getstatic        game.AutoTpa.pendingCommand : Ljava/lang/String;
+     54 invokevirtual    client.multiplayer.ClientPacketListener.sendCommand(Ljava/lang/String;)V
+     57 aload_0          
+     58 getfield         client.Minecraft.player : Lnet/minecraft/client/player/LocalPlayer;
+     61 ldc              '[FWM] '
+     63 invokestatic     network.chat.Component.literal(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;
+     66 getstatic        ChatFormatting.GREEN : Lnet/minecraft/ChatFormatting;
+     69 invokevirtual    network.chat.MutableComponent.withStyle(Lnet/minecraft/ChatFormatting;)Lnet/minecraft/network/chat/MutableComponent;
+     72 getstatic        game.AutoTpa.pendingName : Ljava/lang/String;
+     75 invokedynamic    indy makeConcatWithConstants(Ljava/lang/String;)Ljava/lang/String; 0 0
+     80 getstatic        game.AutoTpa.pendingName : Ljava/lang/String;
+     83 invokedynamic    indy makeConcatWithConstants(Ljava/lang/String;)Ljava/lang/String; 0 0
+     88 invokestatic     ui.Lang.t(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+     91 invokestatic     network.chat.Component.literal(Ljava/lang/String;)Lnet/minecraft/network/chat/MutableComponent;
+     94 getstatic        ChatFormatting.GRAY : Lnet/minecraft/ChatFormatting;
+     97 invokevirtual    network.chat.MutableComponent.withStyle(Lnet/minecraft/ChatFormatting;)Lnet/minecraft/network/chat/MutableComponent;
+    100 invokevirtual    network.chat.MutableComponent.append(Lnet/minecraft/network/chat/Component;)Lnet/minecraft/network/chat/MutableComponent;
+    103 invokevirtual    client.player.LocalPlayer.sendSystemMessage(Lnet/minecraft/network/chat/Component;)V
+    106 aconst_null      
+    107 putstatic        game.AutoTpa.pendingCommand : Ljava/lang/String;
+    110 return           

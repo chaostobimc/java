@@ -1,0 +1,573 @@
+// net/friendswithmoney/fwm/net/ClanLogos vClassVersion(major=69, minor=0)
+field FOLDER Ljava/lang/String;
+field PACK_ID Ljava/lang/String;
+field READY Ljava/util/Map;
+field LOADING Ljava/util/Set;
+field active Ljava/util/Set;
+field checkedAtStart Z
+field nextIcon J
+
+=== tick(Lnet/minecraft/client/Minecraft;Ljava/util/List;Ljava/util/List;)V
+  [try 479..504 handler 507 type 291]
+      0 new              java/util/ArrayList
+      3 dup              
+      4 invokespecial    ArrayList.<init>()V
+      7 astore_3         
+      8 aload_1          
+      9 invokeinterface  List.iterator()Ljava/util/Iterator; 1 0
+     14 astore           v4
+     16 aload            v4
+     18 invokeinterface  Iterator.hasNext()Z 1 0
+     23 ifeq             119
+     26 aload            v4
+     28 invokeinterface  Iterator.next()Ljava/lang/Object; 1 0
+     33 checkcast        net/friendswithmoney/fwm/net/TrustedClans$Clan
+     36 astore           v5
+     38 aload            v5
+     40 getfield         net.TrustedClans$Clan.iconUrl : Ljava/lang/String;
+     43 ifnull           86
+     46 aload_3          
+     47 new              net/friendswithmoney/fwm/net/ClanLogos$Logo
+     50 dup              
+     51 aload            v5
+     53 getfield         net.TrustedClans$Clan.id : Ljava/lang/String;
+     56 aload            v5
+     58 getfield         net.TrustedClans$Clan.iconUrl : Ljava/lang/String;
+     61 aload            v5
+     63 getfield         net.TrustedClans$Clan.iconEtag : Ljava/lang/String;
+     66 invokestatic     net.ClanLogos.versionOf(Ljava/lang/String;)J
+     69 aload            v5
+     71 getfield         net.TrustedClans$Clan.iconEtag : Ljava/lang/String;
+     74 invokespecial    net.ClanLogos$Logo.<init>(Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;)V
+     77 invokeinterface  List.add(Ljava/lang/Object;)Z 2 0
+     82 pop              
+     83 goto             116
+     86 aload_3          
+     87 new              net/friendswithmoney/fwm/net/ClanLogos$Logo
+     90 dup              
+     91 aload            v5
+     93 getfield         net.TrustedClans$Clan.id : Ljava/lang/String;
+     96 aload            v5
+     98 getfield         net.TrustedClans$Clan.logo : Ljava/lang/String;
+    101 aload            v5
+    103 getfield         net.TrustedClans$Clan.logoVersion : J
+    106 aconst_null      
+    107 invokespecial    net.ClanLogos$Logo.<init>(Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;)V
+    110 invokeinterface  List.add(Ljava/lang/Object;)Z 2 0
+    115 pop              
+    116 goto             16
+    119 aload_2          
+    120 invokeinterface  List.iterator()Ljava/util/Iterator; 1 0
+    125 astore           v4
+    127 aload            v4
+    129 invokeinterface  Iterator.hasNext()Z 1 0
+    134 ifeq             195
+    137 aload            v4
+    139 invokeinterface  Iterator.next()Ljava/lang/Object; 1 0
+    144 checkcast        net/friendswithmoney/fwm/net/TrustedClans$Player
+    147 astore           v5
+    149 aload            v5
+    151 getfield         net.TrustedClans$Player.uuid : Ljava/lang/String;
+    154 ifnull           192
+    157 aload_3          
+    158 new              net/friendswithmoney/fwm/net/ClanLogos$Logo
+    161 dup              
+    162 aload            v5
+    164 getfield         net.TrustedClans$Player.uuid : Ljava/lang/String;
+    167 invokedynamic    indy makeConcatWithConstants(Ljava/lang/String;)Ljava/lang/String; 0 0
+    172 aload            v5
+    174 getfield         net.TrustedClans$Player.logo : Ljava/lang/String;
+    177 aload            v5
+    179 getfield         net.TrustedClans$Player.logoVersion : J
+    182 aconst_null      
+    183 invokespecial    net.ClanLogos$Logo.<init>(Ljava/lang/String;Ljava/lang/String;JLjava/lang/String;)V
+    186 invokeinterface  List.add(Ljava/lang/Object;)Z 2 0
+    191 pop              
+    192 goto             127
+    195 aload_3          
+    196 invokeinterface  List.iterator()Ljava/util/Iterator; 1 0
+    201 astore           v4
+    203 aload            v4
+    205 invokeinterface  Iterator.hasNext()Z 1 0
+    210 ifeq             601
+    213 aload            v4
+    215 invokeinterface  Iterator.next()Ljava/lang/Object; 1 0
+    220 checkcast        net/friendswithmoney/fwm/net/ClanLogos$Logo
+    223 astore           v5
+    225 aload            v5
+    227 invokevirtual    net.ClanLogos$Logo.logoVersion()J
+    230 lconst_0         
+    231 lcmp             
+    232 ifle             203
+    235 aload            v5
+    237 invokevirtual    net.ClanLogos$Logo.logo()Ljava/lang/String;
+    240 ifnull           203
+    243 aload            v5
+    245 invokevirtual    net.ClanLogos$Logo.logo()Ljava/lang/String;
+    248 invokevirtual    String.isBlank()Z
+    251 ifne             203
+    254 aload            v5
+    256 invokevirtual    net.ClanLogos$Logo.id()Ljava/lang/String;
+    259 ifnull           203
+    262 aload            v5
+    264 invokevirtual    net.ClanLogos$Logo.id()Ljava/lang/String;
+    267 ldc              '[a-z0-9_-]{2,24}|p_[0-9a-f]{32}'
+    269 invokevirtual    String.matches(Ljava/lang/String;)Z
+    272 ifne             278
+    275 goto             203
+    278 getstatic        net.ClanLogos.READY : Ljava/util/Map;
+    281 aload            v5
+    283 invokevirtual    net.ClanLogos$Logo.id()Ljava/lang/String;
+    286 invokeinterface  Map.get(Ljava/lang/Object;)Ljava/lang/Object; 2 0
+    291 checkcast        java/lang/Long
+    294 astore           v6
+    296 aload            v6
+    298 ifnull           318
+    301 aload            v6
+    303 invokevirtual    Long.longValue()J
+    306 aload            v5
+    308 invokevirtual    net.ClanLogos$Logo.logoVersion()J
+    311 lcmp             
+    312 ifne             318
+    315 goto             203
+    318 invokestatic     net.ClanLogos.cacheDir()Ljava/nio/file/Path;
+    321 aload            v5
+    323 invokevirtual    net.ClanLogos$Logo.id()Ljava/lang/String;
+    326 aload            v5
+    328 invokevirtual    net.ClanLogos$Logo.logoVersion()J
+    331 invokedynamic    indy makeConcatWithConstants(Ljava/lang/String;J)Ljava/lang/String; 0 0
+    336 invokeinterface  Path.resolve(Ljava/lang/String;)Ljava/nio/file/Path; 2 0
+    341 astore           v7
+    343 aload            v7
+    345 iconst_0         
+    346 anewarray        242
+    349 invokestatic     Files.exists(Ljava/nio/file/Path;[Ljava/nio/file/LinkOption;)Z
+    352 ifeq             380
+    355 getstatic        net.ClanLogos.READY : Ljava/util/Map;
+    358 aload            v5
+    360 invokevirtual    net.ClanLogos$Logo.id()Ljava/lang/String;
+    363 aload            v5
+    365 invokevirtual    net.ClanLogos$Logo.logoVersion()J
+    368 invokestatic     Long.valueOf(J)Ljava/lang/Long;
+    371 invokeinterface  Map.put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object; 3 0
+    376 pop              
+    377 goto             203
+    380 aload            v5
+    382 invokevirtual    net.ClanLogos$Logo.logo()Ljava/lang/String;
+    385 ldc_w            'http'
+    388 invokevirtual    String.startsWith(Ljava/lang/String;)Z
+    391 istore           v8
+    393 iload            v8
+    395 ifeq             411
+    398 invokestatic     System.currentTimeMillis()J
+    401 getstatic        net.ClanLogos.nextIcon : J
+    404 lcmp             
+    405 ifge             411
+    408 goto             203
+    411 getstatic        net.ClanLogos.LOADING : Ljava/util/Set;
+    414 aload            v5
+    416 invokevirtual    net.ClanLogos$Logo.id()Ljava/lang/String;
+    419 invokeinterface  Set.add(Ljava/lang/Object;)Z 2 0
+    424 ifne             430
+    427 goto             203
+    430 aload            v5
+    432 invokevirtual    net.ClanLogos$Logo.id()Ljava/lang/String;
+    435 astore           v9
+    437 aload            v5
+    439 invokevirtual    net.ClanLogos$Logo.logoVersion()J
+    442 lstore           v10
+    444 iload            v8
+    446 ifeq             551
+    449 invokestatic     System.currentTimeMillis()J
+    452 ldc2_w           1000
+    455 ladd             
+    456 putstatic        net.ClanLogos.nextIcon : J
+    459 invokestatic     net.ClanLogos.cacheDir()Ljava/nio/file/Path;
+    462 aload            v9
+    464 invokedynamic    indy makeConcatWithConstants(Ljava/lang/String;)Ljava/lang/String; 0 0
+    469 invokeinterface  Path.resolve(Ljava/lang/String;)Ljava/nio/file/Path; 2 0
+    474 astore           v12
+    476 aconst_null      
+    477 astore           v13
+    479 aload            v12
+    481 iconst_0         
+    482 anewarray        242
+    485 invokestatic     Files.exists(Ljava/nio/file/Path;[Ljava/nio/file/LinkOption;)Z
+    488 ifeq             504
+    491 aload            v12
+    493 getstatic        StandardCharsets.UTF_8 : Ljava/nio/charset/Charset;
+    496 invokestatic     Files.readString(Ljava/nio/file/Path;Ljava/nio/charset/Charset;)Ljava/lang/String;
+    499 invokevirtual    String.trim()Ljava/lang/String;
+    502 astore           v13
+    504 goto             509
+    507 astore           v14
+    509 aload            v13
+    511 astore           v14
+    513 ldc_w            'GET'
+    516 aload            v5
+    518 invokevirtual    net.ClanLogos$Logo.logo()Ljava/lang/String;
+    521 aload            v14
+    523 aconst_null      
+    524 aconst_null      
+    525 ldc2_w           2097152
+    528 invokestatic     net.FwmApi.request(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;J)Ljava/util/concurrent/CompletableFuture;
+    531 aload            v9
+    533 aload            v7
+    535 lload            v10
+    537 aload            v12
+    539 invokedynamic    indy accept(Ljava/lang/String;Ljava/nio/file/Path;JLjava/nio/file/Path;)Ljava/util/function/BiConsumer; 0 0
+    544 invokevirtual    concurrent.CompletableFuture.whenComplete(Ljava/util/function/BiConsumer;)Ljava/util/concurrent/CompletableFuture;
+    547 pop              
+    548 goto             203
+    551 getstatic        config.FwmConfig.INSTANCE : Lnet/friendswithmoney/fwm/config/FwmConfig;
+    554 getfield         config.FwmConfig.apiBaseUrl : Ljava/lang/String;
+    557 ldc_w            '/+$'
+    560 ldc_w            ''
+    563 invokevirtual    String.replaceAll(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+    566 aload            v5
+    568 invokevirtual    net.ClanLogos$Logo.logo()Ljava/lang/String;
+    571 invokedynamic    indy makeConcatWithConstants(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; 0 0
+    576 astore           v12
+    578 aload            v12
+    580 invokestatic     net.FwmApi.getBytes(Ljava/lang/String;)Ljava/util/concurrent/CompletableFuture;
+    583 aload            v7
+    585 aload            v9
+    587 lload            v10
+    589 invokedynamic    indy accept(Ljava/nio/file/Path;Ljava/lang/String;J)Ljava/util/function/BiConsumer; 0 0
+    594 invokevirtual    concurrent.CompletableFuture.whenComplete(Ljava/util/function/BiConsumer;)Ljava/util/concurrent/CompletableFuture;
+    597 pop              
+    598 goto             203
+    601 aload_0          
+    602 getfield         client.Minecraft.gui : Lnet/minecraft/client/gui/Gui;
+    605 invokevirtual    client.gui.Gui.overlay()Lnet/minecraft/client/gui/screens/Overlay;
+    608 ifnonnull        621
+    611 aload_0          
+    612 getfield         client.Minecraft.gui : Lnet/minecraft/client/gui/Gui;
+    615 invokevirtual    client.gui.Gui.screen()Lnet/minecraft/client/gui/screens/Screen;
+    618 ifnull           622
+    621 return           
+    622 new              java/util/TreeMap
+    625 dup              
+    626 invokespecial    TreeMap.<init>()V
+    629 astore           v4
+    631 aload_3          
+    632 invokeinterface  List.iterator()Ljava/util/Iterator; 1 0
+    637 astore           v5
+    639 aload            v5
+    641 invokeinterface  Iterator.hasNext()Z 1 0
+    646 ifeq             726
+    649 aload            v5
+    651 invokeinterface  Iterator.next()Ljava/lang/Object; 1 0
+    656 checkcast        net/friendswithmoney/fwm/net/ClanLogos$Logo
+    659 astore           v6
+    661 getstatic        net.ClanLogos.READY : Ljava/util/Map;
+    664 aload            v6
+    666 invokevirtual    net.ClanLogos$Logo.id()Ljava/lang/String;
+    669 invokeinterface  Map.get(Ljava/lang/Object;)Ljava/lang/Object; 2 0
+    674 checkcast        java/lang/Long
+    677 astore           v7
+    679 aload            v7
+    681 ifnull           723
+    684 aload            v6
+    686 invokevirtual    net.ClanLogos$Logo.logoVersion()J
+    689 lconst_0         
+    690 lcmp             
+    691 ifle             723
+    694 aload            v7
+    696 invokevirtual    Long.longValue()J
+    699 aload            v6
+    701 invokevirtual    net.ClanLogos$Logo.logoVersion()J
+    704 lcmp             
+    705 ifne             723
+    708 aload            v4
+    710 aload            v6
+    712 invokevirtual    net.ClanLogos$Logo.id()Ljava/lang/String;
+    715 aload            v7
+    717 invokeinterface  Map.put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object; 3 0
+    722 pop              
+    723 goto             639
+    726 aload            v4
+    728 invokeinterface  Map.isEmpty()Z 1 0
+    733 ifeq             742
+    736 ldc_w            ''
+    739 goto             755
+    742 invokestatic     antileak.AntiLeakPack.packFormat()I
+    745 aload            v4
+    747 invokestatic     String.valueOf(Ljava/lang/Object;)Ljava/lang/String;
+    750 invokedynamic    indy makeConcatWithConstants(ILjava/lang/String;)Ljava/lang/String; 0 0
+    755 astore           v5
+    757 getstatic        net.ClanLogos.checkedAtStart : Z
+    760 ifne             809
+    763 iconst_1         
+    764 putstatic        net.ClanLogos.checkedAtStart : Z
+    767 aload            v5
+    769 getstatic        config.FwmConfig.INSTANCE : Lnet/friendswithmoney/fwm/config/FwmConfig;
+    772 getfield         config.FwmConfig.clanLogosApplied : Ljava/lang/String;
+    775 invokevirtual    String.equals(Ljava/lang/Object;)Z
+    778 ifeq             809
+    781 aload_0          
+    782 invokestatic     net.ClanLogos.folder(Lnet/minecraft/client/Minecraft;)Ljava/nio/file/Path;
+    785 iconst_0         
+    786 anewarray        242
+    789 invokestatic     Files.isDirectory(Ljava/nio/file/Path;[Ljava/nio/file/LinkOption;)Z
+    792 ifeq             809
+    795 aload            v4
+    797 invokeinterface  Map.keySet()Ljava/util/Set; 1 0
+    802 invokestatic     Set.copyOf(Ljava/util/Collection;)Ljava/util/Set;
+    805 putstatic        net.ClanLogos.active : Ljava/util/Set;
+    808 return           
+    809 aload            v5
+    811 getstatic        config.FwmConfig.INSTANCE : Lnet/friendswithmoney/fwm/config/FwmConfig;
+    814 getfield         config.FwmConfig.clanLogosApplied : Ljava/lang/String;
+    817 invokevirtual    String.equals(Ljava/lang/Object;)Z
+    820 ifeq             824
+    823 return           
+    824 aload            v4
+    826 invokeinterface  Map.isEmpty()Z 1 0
+    831 ifne             849
+    834 aload            v4
+    836 invokeinterface  Map.size()I 1 0
+    841 aload_3          
+    842 invokestatic     net.ClanLogos.countWithLogo(Ljava/util/List;)I
+    845 if_icmpge        849
+    848 return           
+    849 aload_0          
+    850 aload            v4
+    852 aload            v5
+    854 invokestatic     net.ClanLogos.apply(Lnet/minecraft/client/Minecraft;Ljava/util/Map;Ljava/lang/String;)V
+    857 return           
+
+=== lambda$tick$1(Ljava/nio/file/Path;Ljava/lang/String;J[BLjava/lang/Throwable;)V
+  [try 0..86 handler 99 type 291]
+  [try 0..86 handler 114 type 0]
+  [try 99..101 handler 114 type 0]
+  [try 114..116 handler 114 type 0]
+      0 aload            v5
+      2 ifnonnull        86
+      5 aload            v4
+      7 ifnull           86
+     10 aload            v4
+     12 arraylength      
+     13 bipush           8
+     15 if_icmple        86
+     18 aload            v4
+     20 arraylength      
+     21 ldc_w            64000
+     24 if_icmpge        86
+     27 aload            v4
+     29 iconst_0         
+     30 baload           
+     31 sipush           255
+     34 iand             
+     35 sipush           137
+     38 if_icmpne        86
+     41 aload            v4
+     43 iconst_1         
+     44 baload           
+     45 bipush           80
+     47 if_icmpne        86
+     50 invokestatic     net.ClanLogos.cacheDir()Ljava/nio/file/Path;
+     53 iconst_0         
+     54 anewarray        433
+     57 invokestatic     Files.createDirectories(Ljava/nio/file/Path;[Ljava/nio/file/attribute/FileAttribute;)Ljava/nio/file/Path;
+     60 pop              
+     61 aload_0          
+     62 aload            v4
+     64 iconst_0         
+     65 anewarray        444
+     68 invokestatic     Files.write(Ljava/nio/file/Path;[B[Ljava/nio/file/OpenOption;)Ljava/nio/file/Path;
+     71 pop              
+     72 getstatic        net.ClanLogos.READY : Ljava/util/Map;
+     75 aload_1          
+     76 lload_2          
+     77 invokestatic     Long.valueOf(J)Ljava/lang/Long;
+     80 invokeinterface  Map.put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object; 3 0
+     85 pop              
+     86 getstatic        net.ClanLogos.LOADING : Ljava/util/Set;
+     89 aload_1          
+     90 invokeinterface  Set.remove(Ljava/lang/Object;)Z 2 0
+     95 pop              
+     96 goto             129
+     99 astore           v6
+    101 getstatic        net.ClanLogos.LOADING : Ljava/util/Set;
+    104 aload_1          
+    105 invokeinterface  Set.remove(Ljava/lang/Object;)Z 2 0
+    110 pop              
+    111 goto             129
+    114 astore           v7
+    116 getstatic        net.ClanLogos.LOADING : Ljava/util/Set;
+    119 aload_1          
+    120 invokeinterface  Set.remove(Ljava/lang/Object;)Z 2 0
+    125 pop              
+    126 aload            v7
+    128 athrow           
+    129 return           
+
+=== lambda$tick$0(Ljava/lang/String;Ljava/nio/file/Path;JLjava/nio/file/Path;Lnet/friendswithmoney/fwm/net/FwmApi$Fetched;Ljava/lang/Throwable;)V
+  [try 0..5 handler 316 type 291]
+  [try 16..49 handler 316 type 291]
+  [try 60..141 handler 316 type 291]
+  [try 152..206 handler 316 type 291]
+  [try 217..229 handler 316 type 291]
+  [try 240..303 handler 316 type 291]
+  [try 0..5 handler 331 type 0]
+  [try 16..49 handler 331 type 0]
+  [try 60..141 handler 331 type 0]
+  [try 152..206 handler 331 type 0]
+  [try 217..229 handler 331 type 0]
+  [try 240..303 handler 331 type 0]
+  [try 316..318 handler 331 type 0]
+  [try 331..333 handler 331 type 0]
+      0 aload            v6
+      2 ifnull           16
+      5 getstatic        net.ClanLogos.LOADING : Ljava/util/Set;
+      8 aload_0          
+      9 invokeinterface  Set.remove(Ljava/lang/Object;)Z 2 0
+     14 pop              
+     15 return           
+     16 aload            v5
+     18 invokevirtual    net.FwmApi$Fetched.status()I
+     21 sipush           429
+     24 if_icmpne        60
+     27 invokestatic     System.currentTimeMillis()J
+     30 ldc2_w           60
+     33 aload            v5
+     35 invokevirtual    net.FwmApi$Fetched.retryAfterSeconds()J
+     38 invokestatic     Math.max(JJ)J
+     41 ldc2_w           1000
+     44 lmul             
+     45 ladd             
+     46 putstatic        net.ClanLogos.nextIcon : J
+     49 getstatic        net.ClanLogos.LOADING : Ljava/util/Set;
+     52 aload_0          
+     53 invokeinterface  Set.remove(Ljava/lang/Object;)Z 2 0
+     58 pop              
+     59 return           
+     60 invokestatic     net.ClanLogos.cacheDir()Ljava/nio/file/Path;
+     63 iconst_0         
+     64 anewarray        433
+     67 invokestatic     Files.createDirectories(Ljava/nio/file/Path;[Ljava/nio/file/attribute/FileAttribute;)Ljava/nio/file/Path;
+     70 pop              
+     71 invokestatic     net.ClanLogos.cacheDir()Ljava/nio/file/Path;
+     74 aload_0          
+     75 invokedynamic    indy makeConcatWithConstants(Ljava/lang/String;)Ljava/lang/String; 0 0
+     80 invokeinterface  Path.resolve(Ljava/lang/String;)Ljava/nio/file/Path; 2 0
+     85 astore           v7
+     87 aload            v5
+     89 invokevirtual    net.FwmApi$Fetched.status()I
+     92 sipush           304
+     95 if_icmpne        152
+     98 aload            v7
+    100 iconst_0         
+    101 anewarray        242
+    104 invokestatic     Files.exists(Ljava/nio/file/Path;[Ljava/nio/file/LinkOption;)Z
+    107 ifeq             152
+    110 aload            v7
+    112 aload_1          
+    113 iconst_1         
+    114 anewarray        464
+    117 dup              
+    118 iconst_0         
+    119 getstatic        StandardCopyOption.REPLACE_EXISTING : Ljava/nio/file/StandardCopyOption;
+    122 aastore          
+    123 invokestatic     Files.copy(Ljava/nio/file/Path;Ljava/nio/file/Path;[Ljava/nio/file/CopyOption;)Ljava/nio/file/Path;
+    126 pop              
+    127 getstatic        net.ClanLogos.READY : Ljava/util/Map;
+    130 aload_0          
+    131 lload_2          
+    132 invokestatic     Long.valueOf(J)Ljava/lang/Long;
+    135 invokeinterface  Map.put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object; 3 0
+    140 pop              
+    141 getstatic        net.ClanLogos.LOADING : Ljava/util/Set;
+    144 aload_0          
+    145 invokeinterface  Set.remove(Ljava/lang/Object;)Z 2 0
+    150 pop              
+    151 return           
+    152 aload            v5
+    154 invokevirtual    net.FwmApi$Fetched.body()[B
+    157 astore           v8
+    159 aload            v5
+    161 invokevirtual    net.FwmApi$Fetched.status()I
+    164 sipush           200
+    167 if_icmpne        206
+    170 aload            v8
+    172 ifnull           206
+    175 aload            v8
+    177 arraylength      
+    178 bipush           8
+    180 if_icmplt        206
+    183 aload            v8
+    185 iconst_0         
+    186 baload           
+    187 sipush           255
+    190 iand             
+    191 sipush           137
+    194 if_icmpne        206
+    197 aload            v8
+    199 iconst_1         
+    200 baload           
+    201 bipush           80
+    203 if_icmpeq        217
+    206 getstatic        net.ClanLogos.LOADING : Ljava/util/Set;
+    209 aload_0          
+    210 invokeinterface  Set.remove(Ljava/lang/Object;)Z 2 0
+    215 pop              
+    216 return           
+    217 aload            v8
+    219 invokestatic     net.ClanLogos.shrink([B)[B
+    222 astore           v9
+    224 aload            v9
+    226 ifnonnull        240
+    229 getstatic        net.ClanLogos.LOADING : Ljava/util/Set;
+    232 aload_0          
+    233 invokeinterface  Set.remove(Ljava/lang/Object;)Z 2 0
+    238 pop              
+    239 return           
+    240 aload_1          
+    241 aload            v9
+    243 iconst_0         
+    244 anewarray        444
+    247 invokestatic     Files.write(Ljava/nio/file/Path;[B[Ljava/nio/file/OpenOption;)Ljava/nio/file/Path;
+    250 pop              
+    251 aload            v7
+    253 aload            v9
+    255 iconst_0         
+    256 anewarray        444
+    259 invokestatic     Files.write(Ljava/nio/file/Path;[B[Ljava/nio/file/OpenOption;)Ljava/nio/file/Path;
+    262 pop              
+    263 aload            v5
+    265 invokevirtual    net.FwmApi$Fetched.etag()Ljava/lang/String;
+    268 ifnull           289
+    271 aload            v4
+    273 aload            v5
+    275 invokevirtual    net.FwmApi$Fetched.etag()Ljava/lang/String;
+    278 getstatic        StandardCharsets.UTF_8 : Ljava/nio/charset/Charset;
+    281 iconst_0         
+    282 anewarray        444
+    285 invokestatic     Files.writeString(Ljava/nio/file/Path;Ljava/lang/CharSequence;Ljava/nio/charset/Charset;[Ljava/nio/file/OpenOption;)Ljava/nio/file/Path;
+    288 pop              
+    289 getstatic        net.ClanLogos.READY : Ljava/util/Map;
+    292 aload_0          
+    293 lload_2          
+    294 invokestatic     Long.valueOf(J)Ljava/lang/Long;
+    297 invokeinterface  Map.put(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object; 3 0
+    302 pop              
+    303 getstatic        net.ClanLogos.LOADING : Ljava/util/Set;
+    306 aload_0          
+    307 invokeinterface  Set.remove(Ljava/lang/Object;)Z 2 0
+    312 pop              
+    313 goto             346
+    316 astore           v7
+    318 getstatic        net.ClanLogos.LOADING : Ljava/util/Set;
+    321 aload_0          
+    322 invokeinterface  Set.remove(Ljava/lang/Object;)Z 2 0
+    327 pop              
+    328 goto             346
+    331 astore           v10
+    333 getstatic        net.ClanLogos.LOADING : Ljava/util/Set;
+    336 aload_0          
+    337 invokeinterface  Set.remove(Ljava/lang/Object;)Z 2 0
+    342 pop              
+    343 aload            v10
+    345 athrow           
+    346 return           

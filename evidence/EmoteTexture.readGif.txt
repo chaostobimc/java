@@ -1,0 +1,232 @@
+// net/friendswithmoney/fwm/seventv/EmoteTexture vClassVersion(major=69, minor=0)
+field FRAME_H I
+field MAX_FRAME_W I
+field MAX_FRAMES I
+field CACHE Ljava/util/Map;
+field emote Lnet/friendswithmoney/fwm/seventv/Emote;
+field id Lnet/minecraft/resources/Identifier;
+field state Lnet/friendswithmoney/fwm/seventv/EmoteTexture$State;
+field frameW I
+field frameH I
+field frames I
+field frameEnds [I
+field hash J
+
+=== readGif(Ljavax/imageio/ImageReader;Ljava/util/List;Ljava/util/List;)V
+  [try 0..6 handler 9 type 399]
+  [try 19..77 handler 80 type 399]
+  [try 97..105 handler 108 type 399]
+  [try 128..237 handler 240 type 399]
+      0 aload_0          
+      1 iconst_1         
+      2 invokevirtual    ImageReader.getNumImages(Z)I
+      5 istore_3         
+      6 goto             13
+      9 astore           v4
+     11 iconst_1         
+     12 istore_3         
+     13 iconst_m1        
+     14 istore           v4
+     16 iconst_m1        
+     17 istore           v5
+     19 aload_0          
+     20 invokevirtual    ImageReader.getStreamMetadata()Ljavax/imageio/metadata/IIOMetadata;
+     23 astore           v6
+     25 aload            v6
+     27 ifnull           77
+     30 aload            v6
+     32 ldc_w            'javax_imageio_gif_stream_1.0'
+     35 invokevirtual    metadata.IIOMetadata.getAsTree(Ljava/lang/String;)Lorg/w3c/dom/Node;
+     38 astore           v7
+     40 aload            v7
+     42 ldc_w            'LogicalScreenDescriptor'
+     45 invokestatic     seventv.EmoteTexture.child(Lorg/w3c/dom/Node;Ljava/lang/String;)Lorg/w3c/dom/Node;
+     48 astore           v8
+     50 aload            v8
+     52 ifnull           77
+     55 aload            v8
+     57 ldc_w            'logicalScreenWidth'
+     60 iconst_m1        
+     61 invokestatic     seventv.EmoteTexture.intAttr(Lorg/w3c/dom/Node;Ljava/lang/String;I)I
+     64 istore           v4
+     66 aload            v8
+     68 ldc_w            'logicalScreenHeight'
+     71 iconst_m1        
+     72 invokestatic     seventv.EmoteTexture.intAttr(Lorg/w3c/dom/Node;Ljava/lang/String;I)I
+     75 istore           v5
+     77 goto             82
+     80 astore           v6
+     82 aconst_null      
+     83 astore           v6
+     85 aconst_null      
+     86 astore           v7
+     88 iconst_0         
+     89 istore           v8
+     91 iload            v8
+     93 iload_3          
+     94 if_icmpge        528
+     97 aload_0          
+     98 iload            v8
+    100 invokevirtual    ImageReader.read(I)Ljava/awt/image/BufferedImage;
+    103 astore           v9
+    105 goto             113
+    108 astore           v10
+    110 goto             528
+    113 iconst_0         
+    114 istore           v10
+    116 iconst_0         
+    117 istore           v11
+    119 bipush           10
+    121 istore           v12
+    123 ldc_w            'none'
+    126 astore           v13
+    128 aload_0          
+    129 iload            v8
+    131 invokevirtual    ImageReader.getImageMetadata(I)Ljavax/imageio/metadata/IIOMetadata;
+    134 ldc_w            'javax_imageio_gif_image_1.0'
+    137 invokevirtual    metadata.IIOMetadata.getAsTree(Ljava/lang/String;)Lorg/w3c/dom/Node;
+    140 astore           v14
+    142 aload            v14
+    144 ldc_w            'ImageDescriptor'
+    147 invokestatic     seventv.EmoteTexture.child(Lorg/w3c/dom/Node;Ljava/lang/String;)Lorg/w3c/dom/Node;
+    150 astore           v15
+    152 aload            v15
+    154 ifnull           179
+    157 aload            v15
+    159 ldc_w            'imageLeftPosition'
+    162 iconst_0         
+    163 invokestatic     seventv.EmoteTexture.intAttr(Lorg/w3c/dom/Node;Ljava/lang/String;I)I
+    166 istore           v10
+    168 aload            v15
+    170 ldc_w            'imageTopPosition'
+    173 iconst_0         
+    174 invokestatic     seventv.EmoteTexture.intAttr(Lorg/w3c/dom/Node;Ljava/lang/String;I)I
+    177 istore           v11
+    179 aload            v14
+    181 ldc_w            'GraphicControlExtension'
+    184 invokestatic     seventv.EmoteTexture.child(Lorg/w3c/dom/Node;Ljava/lang/String;)Lorg/w3c/dom/Node;
+    187 astore           v16
+    189 aload            v16
+    191 ifnull           237
+    194 aload            v16
+    196 ldc_w            'delayTime'
+    199 bipush           10
+    201 invokestatic     seventv.EmoteTexture.intAttr(Lorg/w3c/dom/Node;Ljava/lang/String;I)I
+    204 istore           v12
+    206 aload            v16
+    208 invokeinterface  Node.getAttributes()Lorg/w3c/dom/NamedNodeMap; 1 0
+    213 ldc_w            'disposalMethod'
+    216 invokeinterface  NamedNodeMap.getNamedItem(Ljava/lang/String;)Lorg/w3c/dom/Node; 2 0
+    221 astore           v17
+    223 aload            v17
+    225 ifnull           237
+    228 aload            v17
+    230 invokeinterface  Node.getNodeValue()Ljava/lang/String; 1 0
+    235 astore           v13
+    237 goto             242
+    240 astore           v14
+    242 aload            v6
+    244 ifnonnull        301
+    247 iload            v4
+    249 ifle             257
+    252 iload            v4
+    254 goto             265
+    257 aload            v9
+    259 invokevirtual    image.BufferedImage.getWidth()I
+    262 iload            v10
+    264 iadd             
+    265 istore           v14
+    267 iload            v5
+    269 ifle             277
+    272 iload            v5
+    274 goto             285
+    277 aload            v9
+    279 invokevirtual    image.BufferedImage.getHeight()I
+    282 iload            v11
+    284 iadd             
+    285 istore           v15
+    287 new              java/awt/image/BufferedImage
+    290 dup              
+    291 iload            v14
+    293 iload            v15
+    295 iconst_2         
+    296 invokespecial    image.BufferedImage.<init>(III)V
+    299 astore           v6
+    301 aload            v13
+    303 ldc_w            'restoreToPrevious'
+    306 invokevirtual    String.equals(Ljava/lang/Object;)Z
+    309 ifeq             319
+    312 aload            v6
+    314 invokestatic     seventv.EmoteTexture.copy(Ljava/awt/image/BufferedImage;)Ljava/awt/image/BufferedImage;
+    317 astore           v7
+    319 aload            v6
+    321 invokevirtual    image.BufferedImage.createGraphics()Ljava/awt/Graphics2D;
+    324 astore           v14
+    326 aload            v14
+    328 aload            v9
+    330 iload            v10
+    332 iload            v11
+    334 aconst_null      
+    335 invokevirtual    Graphics2D.drawImage(Ljava/awt/Image;IILjava/awt/image/ImageObserver;)Z
+    338 pop              
+    339 aload            v14
+    341 invokevirtual    Graphics2D.dispose()V
+    344 aload_1          
+    345 aload            v6
+    347 invokestatic     seventv.EmoteTexture.copy(Ljava/awt/image/BufferedImage;)Ljava/awt/image/BufferedImage;
+    350 invokeinterface  List.add(Ljava/lang/Object;)Z 2 0
+    355 pop              
+    356 aload_2          
+    357 iload            v12
+    359 bipush           10
+    361 imul             
+    362 invokestatic     Integer.valueOf(I)Ljava/lang/Integer;
+    365 invokeinterface  List.add(Ljava/lang/Object;)Z 2 0
+    370 pop              
+    371 aload            v13
+    373 astore           v15
+    375 iconst_m1        
+    376 istore           v16
+    378 aload            v15
+    380 invokevirtual    String.hashCode()I
+    383 lookupswitch     {-1954179604: 25, 1612371904: 42} 439
+    408 aload            v15
+    410 ldc_w            'restoreToBackgroundColor'
+    413 invokevirtual    String.equals(Ljava/lang/Object;)Z
+    416 ifeq             439
+    419 iconst_0         
+    420 istore           v16
+    422 goto             439
+    425 aload            v15
+    427 ldc_w            'restoreToPrevious'
+    430 invokevirtual    String.equals(Ljava/lang/Object;)Z
+    433 ifeq             439
+    436 iconst_1         
+    437 istore           v16
+    439 iload            v16
+    441 lookupswitch     {0: 27, 1: 69} 522
+    468 aload            v6
+    470 invokevirtual    image.BufferedImage.createGraphics()Ljava/awt/Graphics2D;
+    473 astore           v17
+    475 aload            v17
+    477 getstatic        AlphaComposite.Clear : Ljava/awt/AlphaComposite;
+    480 invokevirtual    Graphics2D.setComposite(Ljava/awt/Composite;)V
+    483 aload            v17
+    485 iload            v10
+    487 iload            v11
+    489 aload            v9
+    491 invokevirtual    image.BufferedImage.getWidth()I
+    494 aload            v9
+    496 invokevirtual    image.BufferedImage.getHeight()I
+    499 invokevirtual    Graphics2D.fillRect(IIII)V
+    502 aload            v17
+    504 invokevirtual    Graphics2D.dispose()V
+    507 goto             522
+    510 aload            v7
+    512 ifnull           522
+    515 aload            v7
+    517 astore           v6
+    519 goto             522
+    522 iinc             v8 1
+    525 goto             91
+    528 return           

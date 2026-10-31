@@ -1,0 +1,75 @@
+// net/friendswithmoney/fwm/chat/Messages vClassVersion(major=69, minor=0)
+field GSON Lcom/google/gson/Gson;
+field SAVE_INTERVAL_MS J
+field conversations Ljava/util/List;
+field DUPLICATE_MS J
+field pattern Ljava/util/regex/Pattern;
+field patternSource Ljava/lang/String;
+field dirty Z
+field lastSave J
+field lastKey Ljava/lang/String;
+field lastKeyAt J
+field STRICT Ljava/util/regex/Pattern;
+
+=== send(Ljava/lang/String;Ljava/lang/String;)V
+      0 aload_1          
+      1 ifnull           11
+      4 aload_1          
+      5 invokevirtual    String.isBlank()Z
+      8 ifeq             12
+     11 return           
+     12 getstatic        config.FwmConfig.INSTANCE : Lnet/friendswithmoney/fwm/config/FwmConfig;
+     15 getfield         config.FwmConfig.msgCommand : Ljava/lang/String;
+     18 aload_0          
+     19 aload_1          
+     20 invokestatic     chat.Messages.send(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+     23 return           
+
+=== send(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V
+      0 invokestatic     client.Minecraft.getInstance()Lnet/minecraft/client/Minecraft;
+      3 astore_3         
+      4 aload_3          
+      5 getfield         client.Minecraft.player : Lnet/minecraft/client/player/LocalPlayer;
+      8 ifnonnull        12
+     11 return           
+     12 aload_1          
+     13 ifnull           27
+     16 aload_1          
+     17 invokevirtual    String.isBlank()Z
+     20 ifne             27
+     23 aload_0          
+     24 ifnonnull        28
+     27 return           
+     28 aload_0          
+     29 invokevirtual    String.trim()Ljava/lang/String;
+     32 astore           v4
+     34 aload            v4
+     36 ldc_w            '/'
+     39 invokevirtual    String.startsWith(Ljava/lang/String;)Z
+     42 ifeq             53
+     45 aload            v4
+     47 iconst_1         
+     48 invokevirtual    String.substring(I)Ljava/lang/String;
+     51 astore           v4
+     53 aload            v4
+     55 invokevirtual    String.isEmpty()Z
+     58 ifeq             62
+     61 return           
+     62 aload            v4
+     64 aload_1          
+     65 invokedynamic    indy makeConcatWithConstants(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; 0 0
+     70 astore           v5
+     72 aload_2          
+     73 invokevirtual    String.isBlank()Z
+     76 ifne             92
+     79 aload            v5
+     81 aload_2          
+     82 invokevirtual    String.trim()Ljava/lang/String;
+     85 invokedynamic    indy makeConcatWithConstants(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String; 0 0
+     90 astore           v5
+     92 aload_3          
+     93 getfield         client.Minecraft.player : Lnet/minecraft/client/player/LocalPlayer;
+     96 getfield         client.player.LocalPlayer.connection : Lnet/minecraft/client/multiplayer/ClientPacketListener;
+     99 aload            v5
+    101 invokevirtual    client.multiplayer.ClientPacketListener.sendCommand(Ljava/lang/String;)V
+    104 return           
