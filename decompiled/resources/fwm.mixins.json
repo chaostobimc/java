@@ -1,0 +1,28 @@
+{
+  "required": true,
+  "package": "net.friendswithmoney.fwm.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "client": [
+    "ChatHudMixin",
+    "TextFieldWidgetAccessor",
+    "HandledScreenAccessor",
+    "ScreenTitleAccessor",
+    "DebugHudMixin",
+    "KeyboardMixin",
+    "PlayerListHudMixin",
+    "EntityRendererMixin",
+    "LivingEntityRendererMixin",
+    "SuggestionWindowMixin",
+    "InGameHudMixin",
+    "GameRendererMixin",
+    "ClickSlotMixin",
+    "ChatHudAccessor",
+    "FontsMixin",
+    "MouseMixin",
+    "ChatScreenMixin",
+    "NoRiskChatSearchMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

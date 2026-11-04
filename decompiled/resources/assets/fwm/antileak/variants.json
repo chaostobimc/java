@@ -1,0 +1,1174 @@
+{
+ "blockstates": {
+  "bedrock": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/bedrock"
+     },
+     {
+      "model": "minecraft:block/bedrock_mirrored"
+     },
+     {
+      "model": "minecraft:block/bedrock",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/bedrock_mirrored",
+      "y": 180
+     }
+    ]
+   }
+  },
+  "black_concrete_powder": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/black_concrete_powder"
+     },
+     {
+      "model": "minecraft:block/black_concrete_powder",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/black_concrete_powder",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/black_concrete_powder",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "blue_concrete_powder": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/blue_concrete_powder"
+     },
+     {
+      "model": "minecraft:block/blue_concrete_powder",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/blue_concrete_powder",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/blue_concrete_powder",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "brown_concrete_powder": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/brown_concrete_powder"
+     },
+     {
+      "model": "minecraft:block/brown_concrete_powder",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/brown_concrete_powder",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/brown_concrete_powder",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "cyan_concrete_powder": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/cyan_concrete_powder"
+     },
+     {
+      "model": "minecraft:block/cyan_concrete_powder",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/cyan_concrete_powder",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/cyan_concrete_powder",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "deepslate": {
+   "variants": {
+    "axis=x": [
+     {
+      "model": "minecraft:block/deepslate",
+      "x": 90,
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/deepslate_mirrored",
+      "x": 90,
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/deepslate",
+      "x": 90,
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/deepslate_mirrored",
+      "x": 90,
+      "y": 90
+     }
+    ],
+    "axis=y": [
+     {
+      "model": "minecraft:block/deepslate"
+     },
+     {
+      "model": "minecraft:block/deepslate_mirrored"
+     },
+     {
+      "model": "minecraft:block/deepslate",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/deepslate_mirrored",
+      "y": 180
+     }
+    ],
+    "axis=z": [
+     {
+      "model": "minecraft:block/deepslate",
+      "x": 90
+     },
+     {
+      "model": "minecraft:block/deepslate_mirrored",
+      "x": 90
+     },
+     {
+      "model": "minecraft:block/deepslate",
+      "x": 90,
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/deepslate_mirrored",
+      "x": 90,
+      "y": 180
+     }
+    ]
+   }
+  },
+  "dirt": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/dirt"
+     },
+     {
+      "model": "minecraft:block/dirt",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/dirt",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/dirt",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "dirt_path": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/dirt_path"
+     },
+     {
+      "model": "minecraft:block/dirt_path",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/dirt_path",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/dirt_path",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "grass_block": {
+   "variants": {
+    "snowy=false": [
+     {
+      "model": "minecraft:block/grass_block"
+     },
+     {
+      "model": "minecraft:block/grass_block",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/grass_block",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/grass_block",
+      "y": 270
+     }
+    ],
+    "snowy=true": {
+     "model": "minecraft:block/grass_block_snow"
+    }
+   }
+  },
+  "gray_concrete_powder": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/gray_concrete_powder"
+     },
+     {
+      "model": "minecraft:block/gray_concrete_powder",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/gray_concrete_powder",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/gray_concrete_powder",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "green_concrete_powder": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/green_concrete_powder"
+     },
+     {
+      "model": "minecraft:block/green_concrete_powder",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/green_concrete_powder",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/green_concrete_powder",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "infested_deepslate": {
+   "variants": {
+    "axis=x": [
+     {
+      "model": "minecraft:block/deepslate",
+      "x": 90,
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/deepslate_mirrored",
+      "x": 90,
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/deepslate",
+      "x": 90,
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/deepslate_mirrored",
+      "x": 90,
+      "y": 90
+     }
+    ],
+    "axis=y": [
+     {
+      "model": "minecraft:block/deepslate"
+     },
+     {
+      "model": "minecraft:block/deepslate_mirrored"
+     },
+     {
+      "model": "minecraft:block/deepslate",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/deepslate_mirrored",
+      "y": 180
+     }
+    ],
+    "axis=z": [
+     {
+      "model": "minecraft:block/deepslate",
+      "x": 90
+     },
+     {
+      "model": "minecraft:block/deepslate_mirrored",
+      "x": 90
+     },
+     {
+      "model": "minecraft:block/deepslate",
+      "x": 90,
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/deepslate_mirrored",
+      "x": 90,
+      "y": 180
+     }
+    ]
+   }
+  },
+  "infested_stone": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/stone"
+     },
+     {
+      "model": "minecraft:block/stone_mirrored"
+     },
+     {
+      "model": "minecraft:block/stone",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/stone_mirrored",
+      "y": 180
+     }
+    ]
+   }
+  },
+  "light_blue_concrete_powder": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/light_blue_concrete_powder"
+     },
+     {
+      "model": "minecraft:block/light_blue_concrete_powder",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/light_blue_concrete_powder",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/light_blue_concrete_powder",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "light_gray_concrete_powder": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/light_gray_concrete_powder"
+     },
+     {
+      "model": "minecraft:block/light_gray_concrete_powder",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/light_gray_concrete_powder",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/light_gray_concrete_powder",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "lily_pad": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/lily_pad"
+     },
+     {
+      "model": "minecraft:block/lily_pad",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/lily_pad",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/lily_pad",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "lime_concrete_powder": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/lime_concrete_powder"
+     },
+     {
+      "model": "minecraft:block/lime_concrete_powder",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/lime_concrete_powder",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/lime_concrete_powder",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "magenta_concrete_powder": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/magenta_concrete_powder"
+     },
+     {
+      "model": "minecraft:block/magenta_concrete_powder",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/magenta_concrete_powder",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/magenta_concrete_powder",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "mycelium": {
+   "variants": {
+    "snowy=false": [
+     {
+      "model": "minecraft:block/mycelium"
+     },
+     {
+      "model": "minecraft:block/mycelium",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/mycelium",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/mycelium",
+      "y": 270
+     }
+    ],
+    "snowy=true": {
+     "model": "minecraft:block/grass_block_snow"
+    }
+   }
+  },
+  "netherrack": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/netherrack"
+     },
+     {
+      "model": "minecraft:block/netherrack",
+      "x": 90
+     },
+     {
+      "model": "minecraft:block/netherrack",
+      "x": 180
+     },
+     {
+      "model": "minecraft:block/netherrack",
+      "x": 270
+     },
+     {
+      "model": "minecraft:block/netherrack",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/netherrack",
+      "x": 90,
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/netherrack",
+      "x": 180,
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/netherrack",
+      "x": 270,
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/netherrack",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/netherrack",
+      "x": 90,
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/netherrack",
+      "x": 180,
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/netherrack",
+      "x": 270,
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/netherrack",
+      "y": 270
+     },
+     {
+      "model": "minecraft:block/netherrack",
+      "x": 90,
+      "y": 270
+     },
+     {
+      "model": "minecraft:block/netherrack",
+      "x": 180,
+      "y": 270
+     },
+     {
+      "model": "minecraft:block/netherrack",
+      "x": 270,
+      "y": 270
+     }
+    ]
+   }
+  },
+  "orange_concrete_powder": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/orange_concrete_powder"
+     },
+     {
+      "model": "minecraft:block/orange_concrete_powder",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/orange_concrete_powder",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/orange_concrete_powder",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "pink_concrete_powder": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/pink_concrete_powder"
+     },
+     {
+      "model": "minecraft:block/pink_concrete_powder",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/pink_concrete_powder",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/pink_concrete_powder",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "podzol": {
+   "variants": {
+    "snowy=false": [
+     {
+      "model": "minecraft:block/podzol"
+     },
+     {
+      "model": "minecraft:block/podzol",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/podzol",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/podzol",
+      "y": 270
+     }
+    ],
+    "snowy=true": {
+     "model": "minecraft:block/grass_block_snow"
+    }
+   }
+  },
+  "purple_concrete_powder": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/purple_concrete_powder"
+     },
+     {
+      "model": "minecraft:block/purple_concrete_powder",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/purple_concrete_powder",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/purple_concrete_powder",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "red_concrete_powder": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/red_concrete_powder"
+     },
+     {
+      "model": "minecraft:block/red_concrete_powder",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/red_concrete_powder",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/red_concrete_powder",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "red_sand": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/red_sand"
+     },
+     {
+      "model": "minecraft:block/red_sand",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/red_sand",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/red_sand",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "rooted_dirt": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/rooted_dirt"
+     },
+     {
+      "model": "minecraft:block/rooted_dirt",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/rooted_dirt",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/rooted_dirt",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "sand": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/sand"
+     },
+     {
+      "model": "minecraft:block/sand",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/sand",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/sand",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "sculk": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/sculk"
+     },
+     {
+      "model": "minecraft:block/sculk_mirrored"
+     },
+     {
+      "model": "minecraft:block/sculk",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/sculk_mirrored",
+      "y": 180
+     }
+    ]
+   }
+  },
+  "sea_pickle": {
+   "variants": {
+    "pickles=1,waterlogged=false": [
+     {
+      "model": "minecraft:block/dead_sea_pickle"
+     },
+     {
+      "model": "minecraft:block/dead_sea_pickle",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/dead_sea_pickle",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/dead_sea_pickle",
+      "y": 270
+     }
+    ],
+    "pickles=1,waterlogged=true": [
+     {
+      "model": "minecraft:block/sea_pickle"
+     },
+     {
+      "model": "minecraft:block/sea_pickle",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/sea_pickle",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/sea_pickle",
+      "y": 270
+     }
+    ],
+    "pickles=2,waterlogged=false": [
+     {
+      "model": "minecraft:block/two_dead_sea_pickles"
+     },
+     {
+      "model": "minecraft:block/two_dead_sea_pickles",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/two_dead_sea_pickles",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/two_dead_sea_pickles",
+      "y": 270
+     }
+    ],
+    "pickles=2,waterlogged=true": [
+     {
+      "model": "minecraft:block/two_sea_pickles"
+     },
+     {
+      "model": "minecraft:block/two_sea_pickles",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/two_sea_pickles",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/two_sea_pickles",
+      "y": 270
+     }
+    ],
+    "pickles=3,waterlogged=false": [
+     {
+      "model": "minecraft:block/three_dead_sea_pickles"
+     },
+     {
+      "model": "minecraft:block/three_dead_sea_pickles",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/three_dead_sea_pickles",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/three_dead_sea_pickles",
+      "y": 270
+     }
+    ],
+    "pickles=3,waterlogged=true": [
+     {
+      "model": "minecraft:block/three_sea_pickles"
+     },
+     {
+      "model": "minecraft:block/three_sea_pickles",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/three_sea_pickles",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/three_sea_pickles",
+      "y": 270
+     }
+    ],
+    "pickles=4,waterlogged=false": [
+     {
+      "model": "minecraft:block/four_dead_sea_pickles"
+     },
+     {
+      "model": "minecraft:block/four_dead_sea_pickles",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/four_dead_sea_pickles",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/four_dead_sea_pickles",
+      "y": 270
+     }
+    ],
+    "pickles=4,waterlogged=true": [
+     {
+      "model": "minecraft:block/four_sea_pickles"
+     },
+     {
+      "model": "minecraft:block/four_sea_pickles",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/four_sea_pickles",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/four_sea_pickles",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "stone": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/stone"
+     },
+     {
+      "model": "minecraft:block/stone_mirrored"
+     },
+     {
+      "model": "minecraft:block/stone",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/stone_mirrored",
+      "y": 180
+     }
+    ]
+   }
+  },
+  "turtle_egg": {
+   "variants": {
+    "eggs=1,hatch=0": [
+     {
+      "model": "minecraft:block/turtle_egg"
+     },
+     {
+      "model": "minecraft:block/turtle_egg",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/turtle_egg",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/turtle_egg",
+      "y": 270
+     }
+    ],
+    "eggs=1,hatch=1": [
+     {
+      "model": "minecraft:block/slightly_cracked_turtle_egg"
+     },
+     {
+      "model": "minecraft:block/slightly_cracked_turtle_egg",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/slightly_cracked_turtle_egg",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/slightly_cracked_turtle_egg",
+      "y": 270
+     }
+    ],
+    "eggs=1,hatch=2": [
+     {
+      "model": "minecraft:block/very_cracked_turtle_egg"
+     },
+     {
+      "model": "minecraft:block/very_cracked_turtle_egg",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/very_cracked_turtle_egg",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/very_cracked_turtle_egg",
+      "y": 270
+     }
+    ],
+    "eggs=2,hatch=0": [
+     {
+      "model": "minecraft:block/two_turtle_eggs"
+     },
+     {
+      "model": "minecraft:block/two_turtle_eggs",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/two_turtle_eggs",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/two_turtle_eggs",
+      "y": 270
+     }
+    ],
+    "eggs=2,hatch=1": [
+     {
+      "model": "minecraft:block/two_slightly_cracked_turtle_eggs"
+     },
+     {
+      "model": "minecraft:block/two_slightly_cracked_turtle_eggs",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/two_slightly_cracked_turtle_eggs",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/two_slightly_cracked_turtle_eggs",
+      "y": 270
+     }
+    ],
+    "eggs=2,hatch=2": [
+     {
+      "model": "minecraft:block/two_very_cracked_turtle_eggs"
+     },
+     {
+      "model": "minecraft:block/two_very_cracked_turtle_eggs",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/two_very_cracked_turtle_eggs",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/two_very_cracked_turtle_eggs",
+      "y": 270
+     }
+    ],
+    "eggs=3,hatch=0": [
+     {
+      "model": "minecraft:block/three_turtle_eggs"
+     },
+     {
+      "model": "minecraft:block/three_turtle_eggs",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/three_turtle_eggs",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/three_turtle_eggs",
+      "y": 270
+     }
+    ],
+    "eggs=3,hatch=1": [
+     {
+      "model": "minecraft:block/three_slightly_cracked_turtle_eggs"
+     },
+     {
+      "model": "minecraft:block/three_slightly_cracked_turtle_eggs",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/three_slightly_cracked_turtle_eggs",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/three_slightly_cracked_turtle_eggs",
+      "y": 270
+     }
+    ],
+    "eggs=3,hatch=2": [
+     {
+      "model": "minecraft:block/three_very_cracked_turtle_eggs"
+     },
+     {
+      "model": "minecraft:block/three_very_cracked_turtle_eggs",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/three_very_cracked_turtle_eggs",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/three_very_cracked_turtle_eggs",
+      "y": 270
+     }
+    ],
+    "eggs=4,hatch=0": [
+     {
+      "model": "minecraft:block/four_turtle_eggs"
+     },
+     {
+      "model": "minecraft:block/four_turtle_eggs",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/four_turtle_eggs",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/four_turtle_eggs",
+      "y": 270
+     }
+    ],
+    "eggs=4,hatch=1": [
+     {
+      "model": "minecraft:block/four_slightly_cracked_turtle_eggs"
+     },
+     {
+      "model": "minecraft:block/four_slightly_cracked_turtle_eggs",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/four_slightly_cracked_turtle_eggs",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/four_slightly_cracked_turtle_eggs",
+      "y": 270
+     }
+    ],
+    "eggs=4,hatch=2": [
+     {
+      "model": "minecraft:block/four_very_cracked_turtle_eggs"
+     },
+     {
+      "model": "minecraft:block/four_very_cracked_turtle_eggs",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/four_very_cracked_turtle_eggs",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/four_very_cracked_turtle_eggs",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "white_concrete_powder": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/white_concrete_powder"
+     },
+     {
+      "model": "minecraft:block/white_concrete_powder",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/white_concrete_powder",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/white_concrete_powder",
+      "y": 270
+     }
+    ]
+   }
+  },
+  "yellow_concrete_powder": {
+   "variants": {
+    "": [
+     {
+      "model": "minecraft:block/yellow_concrete_powder"
+     },
+     {
+      "model": "minecraft:block/yellow_concrete_powder",
+      "y": 90
+     },
+     {
+      "model": "minecraft:block/yellow_concrete_powder",
+      "y": 180
+     },
+     {
+      "model": "minecraft:block/yellow_concrete_powder",
+      "y": 270
+     }
+    ]
+   }
+  }
+ },
+ "colormaps": [
+  "dry_foliage",
+  "foliage",
+  "grass"
+ ],
+ "pack_format": 97
+}

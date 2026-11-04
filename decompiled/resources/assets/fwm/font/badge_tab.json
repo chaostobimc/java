@@ -1,0 +1,13 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "fwm:font/fwm_badge_small.png",
+      "ascent": 8,
+      "height": 10,
+      "chars": [
+        "\ue000"
+      ]
+    }
+  ]
+}

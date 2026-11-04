@@ -1,0 +1,13 @@
+{
+  "providers": [
+    {
+      "type": "bitmap",
+      "file": "fwm:font/market_logo.png",
+      "ascent": 8,
+      "height": 10,
+      "chars": [
+        "\ue000"
+      ]
+    }
+  ]
+}
